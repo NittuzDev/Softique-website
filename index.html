@@ -215,28 +215,31 @@
   }
   .hero-badge {
     position: absolute;
-    bottom: 60px;
-    left: -30px;
+    bottom: 48px;
+    left: 24px;
     background: var(--white);
-    padding: 20px 28px;
-    min-width: 200px;
-    box-shadow: 0 20px 60px rgba(92,61,46,0.12);
+    padding: 22px 30px;
+    min-width: 220px;
+    box-shadow: 0 20px 60px rgba(92,61,46,0.14);
     animation: fadeIn 1s 1s forwards;
     opacity: 0;
+    z-index: 10;
   }
   .hero-badge-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 300;
     color: var(--rose);
     line-height: 1;
+    white-space: nowrap;
   }
   .hero-badge-label {
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--light-text);
-    margin-top: 6px;
+    margin-top: 8px;
+    white-space: nowrap;
   }
   .hero-deco-line {
     position: absolute;
@@ -920,8 +923,8 @@
   <div class="hero-left">
     <p class="hero-eyebrow">Beauty &amp; Nail Clinic · Roma</p>
     <h1 class="hero-title">
-      L'arte della<br>
-      bellezza <em>autentica</em>
+      Le tue unghie,<br>
+      il tuo <em>carattere</em>
     </h1>
     <p class="hero-desc">
       Un'esperienza di cura esclusiva dove ogni dettaglio è pensato per farti sentire straordinaria. Nail art, trattamenti estetici e rituali di benessere in un ambiente di lusso sereno.
