@@ -93,6 +93,16 @@
   }
   .nav-cta:hover { background: var(--rose) !important; }
 
+
+  .gallery-grid-reverse {
+    grid-template-columns: 1fr 1fr 1.5fr 2fr;
+    margin-top: 3px;
+  }
+
+  .gallery-grid-reverse .gallery-item-tall {
+    grid-row: span 2;
+  }
+
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
@@ -554,6 +564,7 @@
   .gallery-item-bg {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     transition: transform 0.5s ease;
   }
   .gallery-item:hover .gallery-item-bg { transform: scale(1.04); }
@@ -846,6 +857,45 @@
     color: rgba(255,255,255,0.2);
   }
 
+  /* ── CONTATTI ── */
+  .contatti {
+    padding: var(--section-pad) 60px;
+    background: var(--white);
+  }
+  .contatti-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contatti-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .contatti-map {
+    height: 520px;
+    border: 1px solid rgba(196,150,122,0.15);
+    overflow: hidden;
+    position: relative;
+    top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .contatti {
+      padding: var(--section-pad) 24px;
+    }
+    .contatti-inner {
+      grid-template-columns: 1fr;
+      gap: 44px;
+    }
+    .contatti-map {
+      height: 320px;
+      top: 0;
+    }
+  }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(28px); }
@@ -1066,6 +1116,9 @@
 </head>
 <body>
 
+
+<!-- nella <ul class="nav-links"> -->
+
 <!-- NAV -->
 <nav id="navbar">
   <a href="#" class="nav-logo">Softique Beauty Nail<span> by Roberta Paiocchi</span></a>
@@ -1073,7 +1126,7 @@
     <li><a href="#about">Chi Siamo</a></li>
     <li><a href="#services">Servizi</a></li>
     <li><a href="#gallery">Gallery</a></li>
-    
+    <li><a href="#contatti">Contatti</a></li>
   </ul>
 <button class="hamburger" id="hamburger" aria-label="Apri menu">
   <span></span><span></span><span></span>
@@ -1087,6 +1140,8 @@
   <a href="#gallery" class="menu-link">Gallery</a>
   <div class="mobile-menu-deco"></div>
   <a href="#testimonials" class="menu-link">Clienti</a>
+  <div class="mobile-menu-deco"></div>
+  <a href="#contatti" class="menu-link">Contatti</a>
 </div>
 
 <!-- HERO -->
@@ -1098,7 +1153,7 @@
       il tuo <em>carattere</em>
     </h1>
     <p class="hero-desc">
-      Un'esperienza di cura esclusiva dove ogni dettaglio è pensato per farti sentire straordinaria. Nail art, trattamenti estetici e rituali di benessere in un ambiente di lusso sereno.
+      Un'esperienza di cura esclusiva dove ogni dettaglio è pensato per farti sentire straordinaria. Nail art, Manicure, Pedicure e rituali di benessere in un ambiente di lusso sereno.
     </p>
     <div class="hero-actions">
       <a href="#services" class="btn-ghost">Scopri i servizi</a>
@@ -1120,27 +1175,23 @@
   <div class="marquee-inner">
     <span class="marquee-item">Nail Art Professionale</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Manicure & Pedicure</span>
+    <span class="marquee-item">Manicure & Pedicure estetica</span>
     <span class="marquee-dot"></span>
     <span class="marquee-item">Semipermanente</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Trattamenti Estetici</span>
+    <span class="marquee-item">Semipermanente con rinforzo</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Ricostruzione Unghie</span>
-    <span class="marquee-dot"></span>
-    <span class="marquee-item">Estetica del Viso</span>
+    <span class="marquee-item">Copertura gel</span>
     <span class="marquee-dot"></span>
     <span class="marquee-item">Nail Art Professionale</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Manicure & Pedicure</span>
+    <span class="marquee-item">Manicure & Pedicure estetica</span>
     <span class="marquee-dot"></span>
     <span class="marquee-item">Semipermanente</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Trattamenti Estetici</span>
+    <span class="marquee-item">Semipermanente con rinforzo</span>
     <span class="marquee-dot"></span>
-    <span class="marquee-item">Ricostruzione Unghie</span>
-    <span class="marquee-dot"></span>
-    <span class="marquee-item">Estetica del Viso</span>
+    <span class="marquee-item">Copertura gel</span>
     <span class="marquee-dot"></span>
   </div>
 </div>
@@ -1149,18 +1200,14 @@
 <section class="about" id="about">
   <div class="about-visual reveal">
     <div class="about-block-main">
-      <div class="nail-icon-grid">
-        <div class="nail-icon"></div>
-        <div class="nail-icon"></div>
-        <div class="nail-icon"></div>
-        <div class="nail-icon"></div>
-        <div class="nail-icon"></div>
-        <div class="nail-icon"></div>
-      </div>
+    <img src="images/Gallery/foto11.jpg" 
+       style="width:100%;height:100%;object-fit:cover;object-position:center;object-position: center top;">
     </div>
     <div class="about-block-accent">
-      <div class="num">8+</div>
+      <div class="num">3+</div>
       <div class="label">Anni di esperienza</div>
+      <div class="num">4</div>
+      <div class="label">Certificazioni professionali conseguite</div>
     </div>
     <div class="about-block-gold"></div>
   </div>
@@ -1168,10 +1215,10 @@
     <p class="section-eyebrow reveal">La nostra storia</p>
     <h2 class="section-title reveal reveal-delay-1">Dove la cura diventa <em>arte</em></h2>
     <p class="section-body reveal reveal-delay-2">
-      Softique Beauty Nail nasce dalla passione per la bellezza e dall'amore per ogni dettaglio. Il nostro studio è un rifugio di eleganza nel cuore della città, dove ogni cliente è accolta come ospite speciale.
+      Softique Beauty Nail nasce dalla passione per la bellezza e dall'amore per ogni dettaglio. Il nostro studio è un rifugio di eleganza, dove ogni cliente è accolta come ospite speciale.
     </p>
     <p class="section-body reveal reveal-delay-2">
-      Il nostro team di professioniste qualificate unisce tecniche all'avanguardia con prodotti di alta gamma, garantendo risultati impeccabili e un'esperienza di benessere totale.
+      Unisco tecniche all'avanguardia con prodotti di alta gamma, garantendo risultati impeccabili e un'esperienza di benessere totale.
     </p>
     <div class="divider-line reveal reveal-delay-3"></div>
     <div class="about-values reveal reveal-delay-3">
@@ -1193,7 +1240,7 @@
       <div class="about-value">
         <div class="about-value-icon">⟡</div>
         <h4>Team Certificato</h4>
-        <p>Specialiste in continua formazione</p>
+        <p>Specialista in continua formazione</p>
       </div>
     </div>
   </div>
@@ -1214,28 +1261,28 @@
       <div class="service-icon">◈</div>
       <h3>Nail Art & Design</h3>
       <p>Creazioni uniche e personalizzate con tecniche artistiche avanzate. Dalla semplicità alla complessità, ogni unghia è una tela.</p>
-      <span class="service-price">A partire da €35</span>
+      <!--<span class="service-price">A partire da €35</span>-->
     </div>
     <div class="service-card reveal reveal-delay-1">
       <div class="service-num">02</div>
       <div class="service-icon">✦</div>
-      <h3>Manicure & Pedicure</h3>
-      <p>Trattamenti completi per mani e piedi con prodotti lussuosi e massaggi rilassanti. La cura che meriti.</p>
-      <span class="service-price">A partire da €28</span>
+      <h3>Manicure & Pedicure estetica</h3>
+      <p>Trattamenti per mani e piedi con prodotti lussuosi e strumenti sempre sanificati ad ogni cliente. La cura che meriti.</p>
+      <!--<span class="service-price">A partire da €28</span>-->
     </div>
     <div class="service-card reveal reveal-delay-2">
       <div class="service-num">03</div>
       <div class="service-icon">♡</div>
-      <h3>Ricostruzione Unghie</h3>
-      <p>Ricostruzione professionale in gel, acrilico e resina. Unghie perfette, naturali e durature per ogni occasione.</p>
-      <span class="service-price">A partire da €55</span>
+      <h3>Copertura gel</h3>
+      <p>Copertura unghie in gel. Unghie perfette, naturali e durature per ogni occasione.</p>
+      <!--<span class="service-price">A partire da €55</span>-->
     </div>
     <div class="service-card reveal reveal-delay-3">
       <div class="service-num">04</div>
       <div class="service-icon">⟡</div>
-      <h3>Estetica & Benessere</h3>
-      <p>Trattamenti viso, ceretta, sopracciglia e rituali di bellezza completi per prenderti cura di tutto te.</p>
-      <span class="service-price">A partire da €30</span>
+      <h3>Semipermanente</h3>
+      <p>Semipermanente classico e con rinforzo per donare alle tue unghie lo stile che meriti</p>
+      <!--<span class="service-price">A partire da €30</span>-->
     </div>
   </div>
 </section>
@@ -1261,7 +1308,7 @@
     <div class="process-step reveal reveal-delay-2">
       <div class="process-circle"><span>III</span></div>
       <h4>Trattamento</h4>
-      <p>Le nostre specialiste eseguono il servizio con maestria e attenzione</p>
+      <p>Eseguiamo il servizio con maestria e attenzione alle tue esigenze</p>
     </div>
     <div class="process-step reveal reveal-delay-3">
       <div class="process-circle"><span>IV</span></div>
@@ -1278,70 +1325,82 @@
       <p class="section-eyebrow reveal">Le nostre creazioni</p>
       <h2 class="section-title reveal reveal-delay-1">Gallery</h2>
     </div>
-    <a href="#booking" class="btn-ghost reveal">Prenota il tuo look</a>
+    <!--<a href="#booking" class="btn-ghost reveal">Prenota il tuo look</a>-->
   </div>
   <div class="gallery-grid">
+
+    <!-- Item 1 — grande, occupa 2 righe -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(155deg, #D4B5A0 0%, #B89A6A 50%, #8C7452 100%);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-          <svg width="160" height="220" viewBox="0 0 160 220" fill="none">
-            <rect x="30" y="40" width="44" height="80" rx="22" fill="rgba(255,255,255,0.25)"/>
-            <rect x="60" y="20" width="40" height="90" rx="20" fill="rgba(255,255,255,0.35)"/>
-            <rect x="88" y="36" width="40" height="80" rx="20" fill="rgba(255,255,255,0.28)"/>
-            <circle cx="80" cy="170" r="24" stroke="rgba(255,255,255,0.3)" stroke-width="1" fill="none"/>
-            <circle cx="80" cy="170" r="12" fill="rgba(255,255,255,0.2)"/>
-          </svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto2.png"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Art Collection</span></div>
       <div class="gallery-item-label">Eleganza senza tempo</div>
     </div>
+
+    <!-- Item 2 -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(135deg, #C4967A, #A07858);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.6;">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="35" stroke="white" stroke-width="0.5"/><circle cx="40" cy="40" r="20" fill="rgba(255,255,255,0.15)"/></svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto5.png"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
       <div class="gallery-item-label">Colori vivaci</div>
     </div>
+
+    <!-- Item 3 — sostituisci con la tua immagine -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(135deg, #E8D5C4, #C4967A);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.5;">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><rect x="20" y="20" width="40" height="40" stroke="white" stroke-width="0.5" fill="none"/><rect x="30" y="30" width="20" height="20" fill="rgba(255,255,255,0.2)"/></svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto9.png"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;;transform:scale(1.2);">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Manicure Classica</span></div>
       <div class="gallery-item-label">Cura naturale</div>
     </div>
+
+    <!-- Item 4 -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(135deg, #3D2218, #1A0F0A);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.7;">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="40" stroke="rgba(196,150,122,0.4)" stroke-width="0.5" stroke-dasharray="4 4"/><circle cx="50" cy="50" r="25" stroke="rgba(196,150,122,0.3)" stroke-width="0.5"/></svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto4.png"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
       <div class="gallery-item-label">Arte al dettaglio</div>
     </div>
+
+    <!-- Item 5 -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(135deg, #B89A6A, #8C7452);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.6;">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><polygon points="40,10 70,70 10,70" stroke="white" stroke-width="0.5" fill="rgba(255,255,255,0.1)"/></svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto10.jpeg"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
       <div class="gallery-item-label">Brillantezza pura</div>
     </div>
+
+    <!-- Item 6 -->
     <div class="gallery-item">
-      <div class="gallery-item-bg" style="background: linear-gradient(135deg, #1A0F0A, #3D2218);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.8;">
-          <svg width="90" height="90" viewBox="0 0 90 90" fill="none"><circle cx="45" cy="45" r="30" stroke="rgba(184,154,106,0.5)" stroke-width="1"/><line x1="15" y1="45" x2="75" y2="45" stroke="rgba(184,154,106,0.3)" stroke-width="0.5"/><line x1="45" y1="15" x2="45" y2="75" stroke="rgba(184,154,106,0.3)" stroke-width="0.5"/></svg>
-        </div>
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto7.png"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
       </div>
       <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
       <div class="gallery-item-label">Forme perfette</div>
     </div>
+
+    <!-- Item 6 -->
+    <div class="gallery-item">
+      <div class="gallery-item-bg">
+        <img src="images/Gallery/foto12.jpg"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
+      </div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Red</span></div>
+      <div class="gallery-item-label">Colori brillanti</div>
+    </div>
+
   </div>
+  
 </section>
 
 <!-- TESTIMONIALS -->
@@ -1354,12 +1413,12 @@
     <div class="testimonial-card reveal">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Un'esperienza indimenticabile. Le ragazze di Softique sono professionali, attente e il risultato supera sempre le aspettative. Non cambierei mai!</p>
+      <p class="testimonial-text">Un'esperienza indimenticabile. Roberta è professionale, attenta e il risultato supera sempre le aspettative. Non cambierei mai!</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(196,150,122,0.12)">GM</div>
         <div class="author-info">
           <h5>Giulia M.</h5>
-          <span>Cliente da 3 anni</span>
+          <!--<span>Cliente da 3 anni</span>-->
         </div>
       </div>
     </div>
@@ -1371,32 +1430,103 @@
         <div class="author-avatar" style="background:rgba(184,154,106,0.12)">SL</div>
         <div class="author-info">
           <h5>Sara L.</h5>
-          <span>Cliente da 2 anni</span>
+          <!--<span>Cliente da 2 anni</span>-->
         </div>
       </div>
     </div>
     <div class="testimonial-card reveal reveal-delay-2">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">L'ambiente è elegante e rilassante, il personale è gentilissimo e preparato. Ogni visita è un momento di puro benessere. Il mio piccolo lusso mensile!</p>
+      <p class="testimonial-text">L'ambiente è elegante e rilassante e Roberta è gentilissima e preparata. Lo consiglio vivamente!</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(92,61,46,0.1)">VR</div>
         <div class="author-info">
           <h5>Valentina R.</h5>
-          <span>Cliente da 1 anno</span>
+          <!--<span>Cliente da 1 anno</span>-->
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- CONTATTI -->
+<section class="contatti" id="contatti">
+  <div class="contatti-inner">
+
+    <div class="contatti-left">
+      <p class="section-eyebrow reveal">Dove siamo</p>
+      <h2 class="section-title reveal reveal-delay-1">Vieni a <em>trovarci</em></h2>
+      <p class="section-body reveal reveal-delay-2">
+        Siamo nel cuore di Rovetta, in Val Seriana. Ti aspettiamo per coccolarti in un ambiente elegante e rilassante.
+      </p>
+
+      <div class="contatti-info reveal reveal-delay-2">
+
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text">
+            <h4>Indirizzo</h4>
+            <p>Via Antonio Magri, 3<br>24020 Rovetta (BG)</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div class="info-text">
+            <h4>Telefono</h4>
+            <p><a href="tel:+393488878623" style="color:var(--light-text);text-decoration:none;">+39 348 887 8623</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div class="info-text">
+            <h4>Orari</h4>
+            <p>
+              Lun – Ven: 14:30 – 19:00<br>
+              Sabato: 09:00 – 18:00<br>
+              Domenica: Chiuso
+            </p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📸</div>
+          <div class="info-text">
+            <h4>Seguici</h4>
+            <div style="display:flex;gap:12px;margin-top:6px;">
+              <a href="https://www.instagram.com/softique_beauty_nail" style="color:var(--rose);font-size:12px;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;font-weight:500;">Instagram</a>
+              <span style="color:var(--blush)">·</span>
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="contatti-map reveal reveal-delay-3">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2789.123!2d9.9873687!3d45.8920665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4783e724692aff77%3A0x81254ad1ea0e699a!2sSoftique%20Beauty%20Nail!5e0!3m2!1sit!2sit!4v1700000000000"
+        width="100%" height="100%"
+        style="border:0;display:block;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+  </div>
+</section>
+
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#" class="nav-logo">Softique Beauty Nail<span>Beauty &amp; Nail Clinic</span></a>
+      <a href="#" class="nav-logo">Softique Beauty Nail<span>Nail Clinic</span></a>
       <p class="footer-desc">
-        Un rifugio di bellezza e benessere nel cuore di Roma. Dove ogni dettaglio racconta una storia di cura e passione.
+        Un rifugio di bellezza e benessere nel cuore di Rovetta. Dove ogni dettaglio racconta una storia di cura e passione.
       </p>
       <div class="footer-socials">
         <a href="#" class="footer-social">in</a>
@@ -1405,15 +1535,15 @@
         <a href="#" class="footer-social">tt</a>
       </div>
     </div>
-    <div class="footer-col">
+    
+    <div class="footer-col"><!--
       <h4>Servizi</h4>
       <ul>
         <li><a href="#">Nail Art & Design</a></li>
         <li><a href="#">Manicure & Pedicure</a></li>
         <li><a href="#">Semipermanente</a></li>
         <li><a href="#">Ricostruzione</a></li>
-        <li><a href="#">Estetica Viso</a></li>
-      </ul>
+      </ul>-->
     </div>
     <div class="footer-col">
       <h4>Studio</h4>
@@ -1437,7 +1567,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2025 Softique Beauty Nail. Tutti i diritti riservati.</span>
+    <span class="footer-copy">© 2026 Softique Beauty Nail. Tutti i diritti riservati.</span>
     <span class="footer-tagline">Beauty is an art, not an accident.</span>
   </div>
 </footer>
