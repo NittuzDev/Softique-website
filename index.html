@@ -76,11 +76,16 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     font-weight: 500;
-    color: var(--dark);
+    color: var(--white);
     text-decoration: none;
-    opacity: 0.75;
-    transition: opacity 0.2s;
+    opacity: 0.80;
+    transition: opacity 0.2s, color 0.3s;
   }
+
+  .scrolled .nav-links a {
+  color: var(--black);
+  }
+  
   .nav-links a:hover { opacity: 1; }
   .nav-cta {
     background: var(--deep);
@@ -1039,7 +1044,7 @@
       bottom: 16px; left: 16px;
       padding: 14px 20px;
       min-width: 170px;
-      border: 5px solid gold;
+      border: 1px solid gold;
     }
     .hero-badge-num { font-size: 30px; }
     .hero-badge-label { font-size: 9px; letter-spacing: 0.14em; }
@@ -1190,8 +1195,8 @@
   linear-gradient(to right,rgba(250,246,240,0.1) 0%,transparent 18%),
   linear-gradient(to top,rgba(26,15,10,0.18) 0%,transparent 40%);"></div>
     <div class="hero-badge">
-      <div class="hero-badge-num">I Dettagli</div>
-      <div class="hero-badge-label">Che parlano di te</div>
+      <div class="hero-badge-num">Roberta Paiocchi</div>
+      <div class="hero-badge-label">Onicotecnica</div>
     </div>
   </div>
 </section>
@@ -1414,7 +1419,7 @@
     <div class="testimonial-card reveal">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Roberta è super brava e precisa! Già preso il prossimo appuntamento</p>
+      <p class="testimonial-text">Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(196,150,122,0.12)">GM</div>
         <div class="author-info">
@@ -1587,6 +1592,15 @@
     });
   }
   
+
+  window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav'); // o il tuo selettore
+  if (window.scrollY > 50) { // soglia in pixel
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
 </script>
 </body>
 </html>
