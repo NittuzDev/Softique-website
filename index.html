@@ -1287,7 +1287,7 @@
     }
     .process-steps::before { display: none; }
 
-    /* GALLERY — mobile: slider a singola immagine */
+    /* GALLERY — mobile: unico scroller orizzontale su tutte le foto */
     .gallery-header {
       padding: 0 24px;
       flex-direction: column;
@@ -1301,10 +1301,10 @@
       padding: 0 !important;
     }
 
-    /* Bottoni freccia: sovrapposti senza spazio dedicato */
+    /* Bottoni freccia: sovrapposti, navigano foto per foto */
     #gallery-prev, #gallery-next {
-      background: rgba(255,255,255,0.18) !important;
-      border-color: rgba(255,255,255,0.25) !important;
+      background: rgba(255,255,255,0.22) !important;
+      border-color: rgba(255,255,255,0.35) !important;
       box-shadow: none !important;
       width: 40px !important;
       height: 40px !important;
@@ -1315,40 +1315,61 @@
     #gallery-prev { left: 8px !important; }
     #gallery-next { right: 8px !important; }
 
-    /* Ogni slide occupa tutto lo schermo in larghezza */
-    .gallery-slide {
-      width: 100%;
-    }
-
-    /* La griglia diventa uno scroller orizzontale a singola foto */
-    .gallery-grid {
+    /* Su mobile: il carousel-wrapper diventa lo scroller piatto */
+    .gallery-carousel-wrapper {
       display: flex !important;
       flex-direction: row !important;
       overflow-x: auto !important;
       scroll-snap-type: x mandatory !important;
       -webkit-overflow-scrolling: touch !important;
-      gap: 0 !important;
-      padding: 0 !important;
-      scrollbar-width: none;
+      scrollbar-width: none !important;
       height: 72vw;
       min-height: 260px;
       max-height: 440px;
+      scroll-behavior: smooth;
     }
-    .gallery-grid::-webkit-scrollbar { display: none; }
+    .gallery-carousel-wrapper::-webkit-scrollbar { display: none; }
 
-    .gallery-item {
+    /* Ogni slide diventa invisibile come contenitore: le sue foto escono flat */
+    .gallery-slide {
+      display: contents !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+
+    /* Ogni griglia diventa flex row inline */
+    .gallery-grid {
+      display: contents !important;
+    }
+
+    /* Ogni foto: larghezza intera, altezza piena, snap — visibile sempre */
+    .gallery-carousel-wrapper .gallery-item {
       flex: 0 0 100% !important;
       width: 100% !important;
       height: 100% !important;
       scroll-snap-align: start !important;
       border-radius: 0 !important;
       cursor: pointer;
+      position: relative !important;
+      opacity: 1 !important;
+      display: block !important;
+      pointer-events: auto !important;
+      transform: none !important;
     }
-    /* Annulla il grid-row span del primo elemento */
-    .gallery-item:nth-child(1) {
-      grid-row: unset !important;
-      grid-column: unset !important;
-      flex: 0 0 100% !important;
+    /* Il background-wrapper si espande a coprire tutta la foto */
+    .gallery-carousel-wrapper .gallery-item-bg {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .gallery-carousel-wrapper .gallery-item-bg img {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
     }
 
     /* TESTIMONIALS */
@@ -1706,7 +1727,7 @@
       </div>
 
       <!-- Slide 1 — seconda serie (duplica/sostituisci con altre immagini se disponibili) -->
-      <div class="gallery-slide" id="gallery-slide-1" style="display:none;">
+      <div class="gallery-slide" id="gallery-slide-1">
         <div class="gallery-grid">
           <div class="gallery-item">
             <div class="gallery-item-bg">
@@ -1760,7 +1781,7 @@
         </div>
       </div>
       
-            <div class="gallery-slide" id="gallery-slide-2" style="display:none;">
+            <div class="gallery-slide" id="gallery-slide-2">
         <div class="gallery-grid">
           <div class="gallery-item">
             <div class="gallery-item-bg">
@@ -2143,53 +2164,97 @@
     scheduleNext();
   })();
 
-  // ── MOBILE GALLERY SWIPE ──
-  // On mobile, each .gallery-grid is a horizontal scroll-snap container.
-  // When the user swipes past the last/first image, advance to the next slide.
+  // ── MOBILE GALLERY: unico scroller flat, tasti e swipe ──
   (function() {
     function isMobile() { return window.innerWidth <= 768; }
 
-    function attachGridSwipe(grid) {
-      let startX = null;
-      let startScroll = null;
-
-      grid.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        startScroll = grid.scrollLeft;
-      }, { passive: true });
-
-      grid.addEventListener('touchend', e => {
-        if (startX === null) return;
-        const dx = e.changedTouches[0].clientX - startX;
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
-        const atEnd   = grid.scrollLeft >= maxScroll - 2;
-        const atStart = grid.scrollLeft <= 2;
-
-        // Only trigger slide change if swiped significantly AND at boundary
-        if (Math.abs(dx) > 60) {
-          if (dx < 0 && atEnd) {
-            // swipe left at end → next slide
-            document.getElementById('gallery-next').click();
-          } else if (dx > 0 && atStart) {
-            // swipe right at start → prev slide
-            document.getElementById('gallery-prev').click();
-          }
-        }
-        startX = null;
-      }, { passive: true });
+    // Restituisce il wrapper su mobile, null su desktop
+    function getScroller() {
+      return isMobile() ? document.querySelector('.gallery-carousel-wrapper') : null;
     }
 
-    // Attach to all grids on load
-    document.querySelectorAll('.gallery-grid').forEach(attachGridSwipe);
+    // Calcola la larghezza di un "passo" (= larghezza dello scroller)
+    function stepWidth(scroller) {
+      return scroller.clientWidth;
+    }
 
-    // After slide transitions, dots show current image index inside the grid
-    const grids = document.querySelectorAll('.gallery-grid');
-    grids.forEach(grid => {
-      grid.addEventListener('scroll', () => {
+    // Naviga di +1 o -1 foto con scroll fluido
+    function mobileNavigate(dir) {
+      const scroller = getScroller();
+      if (!scroller) return;
+      const w = stepWidth(scroller);
+      scroller.scrollBy({ left: dir * w, behavior: 'smooth' });
+    }
+
+    // Intercetta i tasti su mobile
+    const prevBtn = document.getElementById('gallery-prev');
+    const nextBtn = document.getElementById('gallery-next');
+
+    prevBtn.addEventListener('click', function(e) {
+      if (!isMobile()) return; // lascia agire la logica desktop
+      e.stopImmediatePropagation();
+      mobileNavigate(-1);
+    }, true); // capture: true → scatta prima del listener desktop
+
+    nextBtn.addEventListener('click', function(e) {
+      if (!isMobile()) return;
+      e.stopImmediatePropagation();
+      mobileNavigate(1);
+    }, true);
+
+    // Swipe con velocità controllata (scroll momentum ridotto)
+    (function() {
+      const scroller = document.querySelector('.gallery-carousel-wrapper');
+      if (!scroller) return;
+
+      let startX = null;
+      let startScroll = null;
+      let isDragging = false;
+
+      scroller.addEventListener('touchstart', function(e) {
         if (!isMobile()) return;
-        // optional: could update a dot indicator per image here
+        startX = e.touches[0].clientX;
+        startScroll = scroller.scrollLeft;
+        isDragging = true;
+        // Disabilita temporaneamente scroll-behavior smooth per il drag diretto
+        scroller.style.scrollBehavior = 'auto';
       }, { passive: true });
-    });
+
+      scroller.addEventListener('touchmove', function(e) {
+        if (!isMobile() || !isDragging || startX === null) return;
+        const dx = startX - e.touches[0].clientX;
+        // Segui il dito 1:1 ma con attrito (fattore 0.8 per rallentare leggermente)
+        scroller.scrollLeft = startScroll + dx * 0.85;
+      }, { passive: true });
+
+      scroller.addEventListener('touchend', function(e) {
+        if (!isMobile() || !isDragging) return;
+        isDragging = false;
+        const dx = startX - e.changedTouches[0].clientX;
+        const w = stepWidth(scroller);
+
+        // Riaabilita smooth per lo snap finale
+        scroller.style.scrollBehavior = 'smooth';
+
+        // Snap alla foto più vicina in base alla direzione del gesto
+        // Soglia bassa (15% larghezza) = gesto amichevole
+        const threshold = w * 0.15;
+        let target;
+        if (dx > threshold) {
+          // Swipe sinistra → foto successiva
+          target = Math.ceil(scroller.scrollLeft / w) * w;
+        } else if (dx < -threshold) {
+          // Swipe destra → foto precedente
+          target = Math.floor(scroller.scrollLeft / w) * w;
+        } else {
+          // Gesto troppo corto → torna alla foto corrente
+          target = Math.round(scroller.scrollLeft / w) * w;
+        }
+        scroller.scrollTo({ left: target, behavior: 'smooth' });
+        startX = null;
+      }, { passive: true });
+    })();
+
   })();
 
 
