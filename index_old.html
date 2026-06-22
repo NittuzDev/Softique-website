@@ -695,15 +695,14 @@
   .gallery-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    grid-auto-rows: 260px;
-    gap: 8px;
+    grid-template-rows: 260px 260px;
+    gap: 8px; /* MIGLIORATO: Gap più arioso per far respirare le immagini */
     padding: 0 60px;
   }
   .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-soft);
-    cursor: pointer;
+    border-radius: var(--radius-soft); /* Applicato arrotondamento soft */
   }
   .gallery-item-bg {
     position: absolute;
@@ -722,12 +721,10 @@
   .gallery-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(26,15,10,0.35);
+    background: rgba(26,15,10,0.3);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -738,13 +735,6 @@
     text-transform: uppercase;
     color: var(--white);
     font-weight: 400;
-  }
-  .gallery-overlay-icon {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--white);
   }
   .gallery-item-label {
     position: absolute;
@@ -766,82 +756,6 @@
     justify-content: center;
     pointer-events: none;
   }
-
-  /* ── LIGHTBOX ── */
-  .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(26,15,10,0.96);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .lightbox.open {
-    display: flex;
-  }
-  .lightbox-img-wrap {
-    position: relative;
-    max-width: 92vw;
-    max-height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .lightbox-img-wrap img {
-    max-width: 92vw;
-    max-height: 88vh;
-    object-fit: contain;
-    border-radius: 2px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-    user-select: none;
-  }
-  .lightbox-caption {
-    position: absolute;
-    bottom: -36px;
-    left: 0; right: 0;
-    text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    font-weight: 300;
-    font-style: italic;
-    color: rgba(255,255,255,0.55);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .lightbox-close {
-    position: fixed;
-    top: 20px; right: 24px;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.65);
-    font-size: 32px;
-    cursor: pointer;
-    z-index: 10000;
-    line-height: 1;
-    transition: color 0.2s;
-    padding: 4px 10px;
-  }
-  .lightbox-close:hover { color: var(--rose); }
-  .lightbox-nav {
-    position: fixed;
-    top: 50%; transform: translateY(-50%);
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: var(--white);
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    z-index: 10000;
-  }
-  .lightbox-nav:hover { background: var(--rose); border-color: var(--rose); }
-  .lightbox-nav.prev { left: 16px; }
-  .lightbox-nav.next { right: 16px; }
 
   /* ── TESTIMONIALS ── */
   .testimonials {
@@ -1310,9 +1224,9 @@
     }
     .gallery-grid {
       grid-template-columns: 1fr 1fr;
-      grid-auto-rows: 180px;
-      gap: 6px;
-      padding: 0 16px;
+      grid-template-rows: repeat(4, 180px);
+      gap: 8px;
+      padding: 0 24px;
     }
     .gallery-item:nth-child(1) {
       grid-row: span 1;
@@ -1362,7 +1276,7 @@
 
     .gallery-grid {
       grid-template-columns: 1fr;
-      grid-auto-rows: 200px;
+      grid-template-rows: repeat(6, 200px);
     }
     .gallery-item:nth-child(1) { grid-column: span 1; }
 
@@ -1615,49 +1529,49 @@
             <div class="gallery-item-bg">
               <img src="images/slide1/nail-art-collection-rovetta.webp" alt="Nail art collection con design personalizzati realizzati da onicotecnica professionista a Rovetta" loading="lazy" width="800" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.1);">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Nail Art Collection</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Art Collection</span></div>
             <div class="gallery-item-label">Eleganza senza tempo</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/decorazione-unghie-personalizzata.webp" alt="Trattamento unghie con smalto semipermanente e design esclusivi in Val Seriana" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
             <div class="gallery-item-label">Arte al dettaglio</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/manicure-french-classico-elegante.webp" alt="Manicure con French classico elegante su unghie naturali Softique Beauty Nail" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;transform:scale(1.2);">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
             <div class="gallery-item-label">La moda eterna</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/applicazione-smalto-semipermanente-con-rinforzo.webp" alt="Applicazione di smalto semipermanente con rinforzo per unghie resistenti a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
             <div class="gallery-item-label">Classico o con rinforzo</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/ricostruzione-unghie-glitter-shimmer.webp" alt="Ricostruzione unghie con dettagli glitter e shimmer luminosi ad alta precisione" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
             <div class="gallery-item-label">Brillantezza pura</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/foto3.jpeg" alt="Nail sculpting e modellamento forme unghie perfette in gel nello studio a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
             <div class="gallery-item-label">Forme perfette</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide1/foto8.png" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
             <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
           </div>
         </div>
@@ -1670,49 +1584,49 @@
             <div class="gallery-item-bg">
               <img src="images/slide2/copertura-gel-rosso-brillante.webp" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
             <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/foto1.png" alt="Nail sculpting e modellamento forme unghie perfette in gel" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
             <div class="gallery-item-label">Forme perfette</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/foto4.png" alt="Ricostruzione unghie con dettagli glitter e shimmer" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
             <div class="gallery-item-label">Brillantezza pura</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/foto5.jpeg" alt="Manicure professionale Val Seriana" loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:bottom center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure Pro</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Manicure Pro</span></div>
             <div class="gallery-item-label">Cura professionale</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/nail-sculpting-ricostruzione-gel-rovetta.webp" alt="Semipermanente con rinforzo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
             <div class="gallery-item-label">Lunga durata</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/foto11.png" alt="French classico elegante" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
             <div class="gallery-item-label">Senza tempo</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide2/foto2.png" alt="Decorazione unghie personalizzata" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
             <div class="gallery-item-label">Arte al dettaglio</div>
           </div>
         </div>
@@ -1724,49 +1638,49 @@
             <div class="gallery-item-bg">
               <img src="images/slide3/foto3.jpeg" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
             <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto4.jpeg" alt="Nail sculpting e modellamento forme unghie perfette in gel" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
             <div class="gallery-item-label">Forme perfette</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto1.jpeg" alt="Ricostruzione unghie con dettagli glitter e shimmer" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
             <div class="gallery-item-label">Brillantezza pura</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto8.png" alt="Manicure professionale Val Seriana" loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure Pro</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Manicure Pro</span></div>
             <div class="gallery-item-label">Cura professionale</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto6.jpeg" alt="Semipermanente con rinforzo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
             <div class="gallery-item-label">Lunga durata</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto2.jpeg" alt="French classico elegante" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
             <div class="gallery-item-label">Senza tempo</div>
           </div>
           <div class="gallery-item">
             <div class="gallery-item-bg">
               <img src="images/slide3/foto7.png" alt="Decorazione unghie personalizzata" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center;">
             </div>
-            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
             <div class="gallery-item-label">Arte al dettaglio</div>
           </div>
         </div>
@@ -1935,21 +1849,6 @@
   </div>
 </footer>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Immagine ingrandita">
-  <button class="lightbox-close" id="lightbox-close" aria-label="Chiudi">&#x2715;</button>
-  <button class="lightbox-nav prev" id="lightbox-prev" aria-label="Precedente">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-  </button>
-  <div class="lightbox-img-wrap">
-    <img id="lightbox-img" src="" alt="">
-    <div class="lightbox-caption" id="lightbox-caption"></div>
-  </div>
-  <button class="lightbox-nav next" id="lightbox-next" aria-label="Successiva">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </button>
-</div>
-
 <script>
 
   const reveals = document.querySelectorAll('.reveal');
@@ -2097,99 +1996,6 @@
     scheduleNext();
   })();
 
-  // ── LIGHTBOX ──
-  (function() {
-    const lightbox     = document.getElementById('lightbox');
-    const lbImg        = document.getElementById('lightbox-img');
-    const lbCaption    = document.getElementById('lightbox-caption');
-    const lbClose      = document.getElementById('lightbox-close');
-    const lbPrev       = document.getElementById('lightbox-prev');
-    const lbNext       = document.getElementById('lightbox-next');
-
-    let allItems = []; // array of {src, alt, label}
-    let currentLb = 0;
-
-    function buildItemList() {
-      allItems = [];
-      // Collect from the currently visible (active) slide only, in DOM order
-      const activeSlide = document.querySelector('.gallery-slide.active');
-      if (!activeSlide) return;
-      activeSlide.querySelectorAll('.gallery-item').forEach(item => {
-        const img    = item.querySelector('img');
-        const label  = item.querySelector('.gallery-item-label');
-        if (img) {
-          allItems.push({
-            src:   img.src,
-            alt:   img.alt || '',
-            label: label ? label.textContent.trim() : ''
-          });
-        }
-      });
-    }
-
-    function openLightbox(index) {
-      buildItemList();
-      if (!allItems.length) return;
-      currentLb = (index + allItems.length) % allItems.length;
-      const item = allItems[currentLb];
-      lbImg.src         = item.src;
-      lbImg.alt         = item.alt;
-      lbCaption.textContent = item.label;
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      lbImg.style.opacity = '0';
-      lbImg.onload = () => { lbImg.style.transition = 'opacity 0.3s'; lbImg.style.opacity = '1'; };
-      if (lbImg.complete) { lbImg.style.opacity = '1'; }
-      // Show/hide nav based on count
-      lbPrev.style.display = allItems.length > 1 ? '' : 'none';
-      lbNext.style.display = allItems.length > 1 ? '' : 'none';
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-      lbImg.src = '';
-    }
-
-    function navigate(dir) {
-      openLightbox(currentLb + dir);
-    }
-
-    // Delegate click on gallery items
-    document.addEventListener('click', e => {
-      const item = e.target.closest('.gallery-item');
-      if (!item) return;
-      // Find index within its slide
-      buildItemList();
-      const activeSlide = document.querySelector('.gallery-slide.active');
-      if (!activeSlide) return;
-      const items = Array.from(activeSlide.querySelectorAll('.gallery-item'));
-      const idx   = items.indexOf(item);
-      if (idx >= 0) openLightbox(idx);
-    });
-
-    lbClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-    lbPrev.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
-    lbNext.addEventListener('click', e => { e.stopPropagation(); navigate(1); });
-
-    document.addEventListener('keydown', e => {
-      if (!lightbox.classList.contains('open')) return;
-      if (e.key === 'Escape')      closeLightbox();
-      if (e.key === 'ArrowLeft')   navigate(-1);
-      if (e.key === 'ArrowRight')  navigate(1);
-    });
-
-    // Touch swipe support for lightbox
-    let lbTouchX = null;
-    lightbox.addEventListener('touchstart', e => { lbTouchX = e.changedTouches[0].clientX; }, { passive: true });
-    lightbox.addEventListener('touchend', e => {
-      if (lbTouchX === null) return;
-      const dx = e.changedTouches[0].clientX - lbTouchX;
-      if (Math.abs(dx) > 40) navigate(dx < 0 ? 1 : -1);
-      lbTouchX = null;
-    });
-  })();
 
 </script>
 </body>
