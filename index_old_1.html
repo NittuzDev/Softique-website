@@ -1300,68 +1300,23 @@
     }
     .process-steps::before { display: none; }
 
-    /* GALLERY — mobile: slider a singola immagine */
+    /* GALLERY */
     .gallery-header {
       padding: 0 24px;
       flex-direction: column;
       align-items: flex-start;
       gap: 14px;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
-
-    /* Il wrapper esterno perde il padding laterale su mobile */
-    .gallery-outer-wrap {
-      padding: 0 !important;
-    }
-
-    /* Bottoni freccia: sovrapposti senza spazio dedicato */
-    #gallery-prev, #gallery-next {
-      background: rgba(255,255,255,0.18) !important;
-      border-color: rgba(255,255,255,0.25) !important;
-      box-shadow: none !important;
-      width: 40px !important;
-      height: 40px !important;
-    }
-    #gallery-prev svg, #gallery-next svg {
-      stroke: white !important;
-    }
-    #gallery-prev { left: 8px !important; }
-    #gallery-next { right: 8px !important; }
-
-    /* Ogni slide occupa tutto lo schermo in larghezza */
-    .gallery-slide {
-      width: 100%;
-    }
-
-    /* La griglia diventa uno scroller orizzontale a singola foto */
     .gallery-grid {
-      display: flex !important;
-      flex-direction: row !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
-      -webkit-overflow-scrolling: touch !important;
-      gap: 0 !important;
-      padding: 0 !important;
-      scrollbar-width: none;
-      height: 72vw;
-      min-height: 260px;
-      max-height: 440px;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 180px;
+      gap: 6px;
+      padding: 0 16px;
     }
-    .gallery-grid::-webkit-scrollbar { display: none; }
-
-    .gallery-item {
-      flex: 0 0 100% !important;
-      width: 100% !important;
-      height: 100% !important;
-      scroll-snap-align: start !important;
-      border-radius: 0 !important;
-      cursor: pointer;
-    }
-    /* Annulla il grid-row span del primo elemento */
     .gallery-item:nth-child(1) {
-      grid-row: unset !important;
-      grid-column: unset !important;
-      flex: 0 0 100% !important;
+      grid-row: span 1;
+      grid-column: span 2;
     }
 
     /* TESTIMONIALS */
@@ -1406,8 +1361,10 @@
     .process-steps { grid-template-columns: 1fr; gap: 32px; }
 
     .gallery-grid {
-      height: 80vw;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 200px;
     }
+    .gallery-item:nth-child(1) { grid-column: span 1; }
 
     .footer-grid { grid-template-columns: 1fr; }
     .footer-brand { grid-column: span 1; }
@@ -1629,7 +1586,7 @@
     </div>
   </div>
 
-  <div class="gallery-outer-wrap" style="position:relative; padding: 0 60px;">
+  <div style="position:relative; padding: 0 60px;">
 
     <!-- Freccia sinistra -->
     <button id="gallery-prev" aria-label="Precedente" style="
@@ -2092,10 +2049,6 @@
         slides[from].className = 'gallery-slide ' + exitClass;
         slides[to].className   = 'gallery-slide active';
 
-        // Reset scroll on incoming grid for mobile
-        const toGrid = slides[to].querySelector('.gallery-grid');
-        if (toGrid) toGrid.scrollLeft = 0;
-
         current = to;
         updateDots();
 
@@ -2144,56 +2097,7 @@
     scheduleNext();
   })();
 
-  // ── MOBILE GALLERY SWIPE ──
-  // On mobile, each .gallery-grid is a horizontal scroll-snap container.
-  // When the user swipes past the last/first image, advance to the next slide.
-  (function() {
-    function isMobile() { return window.innerWidth <= 768; }
-
-    function attachGridSwipe(grid) {
-      let startX = null;
-      let startScroll = null;
-
-      grid.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        startScroll = grid.scrollLeft;
-      }, { passive: true });
-
-      grid.addEventListener('touchend', e => {
-        if (startX === null) return;
-        const dx = e.changedTouches[0].clientX - startX;
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
-        const atEnd   = grid.scrollLeft >= maxScroll - 2;
-        const atStart = grid.scrollLeft <= 2;
-
-        // Only trigger slide change if swiped significantly AND at boundary
-        if (Math.abs(dx) > 60) {
-          if (dx < 0 && atEnd) {
-            // swipe left at end → next slide
-            document.getElementById('gallery-next').click();
-          } else if (dx > 0 && atStart) {
-            // swipe right at start → prev slide
-            document.getElementById('gallery-prev').click();
-          }
-        }
-        startX = null;
-      }, { passive: true });
-    }
-
-    // Attach to all grids on load
-    document.querySelectorAll('.gallery-grid').forEach(attachGridSwipe);
-
-    // After slide transitions, dots show current image index inside the grid
-    const grids = document.querySelectorAll('.gallery-grid');
-    grids.forEach(grid => {
-      grid.addEventListener('scroll', () => {
-        if (!isMobile()) return;
-        // optional: could update a dot indicator per image here
-      }, { passive: true });
-    });
-  })();
-
-
+  // ── LIGHTBOX ──
   (function() {
     const lightbox     = document.getElementById('lightbox');
     const lbImg        = document.getElementById('lightbox-img');
