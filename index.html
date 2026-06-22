@@ -154,6 +154,82 @@
     grid-row: span 2;
   }
 
+ /* CAROUSEL */
+ .gallery-carousel-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  perspective: 1000px; /* Aggiunge profondità 3D all'effetto */
+}
+
+.gallery-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  /* Aumentiamo lo spostamento a 120px e rimpiccioliamo leggermente lo sfondo */
+  transform: translateX(120px) scale(0.95); 
+  /* Usiamo una curva cubic-bezier personalizzata per un effetto "morbido" */
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 1;
+  transform-origin: center center;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.gallery-slide img {
+  display: block;       /* 💡 Questo elimina lo spazio della baseline del testo */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* Mantiene le proporzioni corrette */
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  /* 💡 PROPRIETÀ CHIAVE PER I PATTERN COME IL JEANS */
+  image-rendering: auto;              /* Permette al browser di usare l'algoritmo standard bilanciato */
+  transform: translate3d(0, 0, 0);     /* Isola l'immagine sulla GPU */
+  
+  /* 💡 IL TRUCCO DEFINITIVO PER IL MOIRÉ: */
+  /* Applica una sfocatura infinitesimale che "ammorbidisce" la trama del jeans 
+     solo durante il rendering matematico del browser, azzerando le interferenze. */
+  filter: blur(0.3px);
+}
+
+.gallery-slide.active {
+  opacity: 1;
+  transform: translateX(0) scale(1.001);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* Slide che esce verso sinistra */
+.gallery-slide.exit-left {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.95);
+}
+
+/* Slide che esce verso destra */
+.gallery-slide.exit-right {
+  opacity: 0;
+  transform: translateX(120px) scale(0.95);
+}
+
+/* Slide che entra da sinistra */
+.gallery-slide.enter-left {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.95);
+}
+
+/* Slide che entra da destra */
+.gallery-slide.enter-right {
+  opacity: 0;
+  transform: translateX(120px) scale(0.95);
+}
+
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
@@ -700,6 +776,8 @@
     padding: 40px 36px;
     position: relative;
     border-radius: var(--radius-soft);
+    display: flex;           /* Aggiungi questa riga */
+    flex-direction: column;  /* Aggiungi questa riga */
   }
   .quote-mark {
     font-family: 'Cormorant Garamond', serif;
@@ -725,6 +803,7 @@
     gap: 14px;
     border-top: 1px solid var(--blush);
     padding-top: 20px;
+    margin-top: auto;        /* Aggiungi questa riga */
   }
   .author-avatar {
     width: 42px; height: 42px;
@@ -1297,7 +1376,7 @@
 <!-- ABOUT -->
 <section class="about" id="about">
   <div class="about-visual reveal">
-    <div class="about-block-main" style="border:1px solid #B89A6A;">
+    <div class="about-block-main">
     <img src="images/manicure-professionale-val-seriana.webp" 
      alt="Dettaglio unghie" 
      loading="lazy" 
@@ -1420,62 +1499,205 @@
       <h2 class="section-title reveal reveal-delay-1">Gallery</h2>
     </div>
   </div>
-  <div class="gallery-grid">
-    <!-- Item 1 — grande -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/nail-art-collection-rovetta.webp" alt="Nail art collection con design personalizzati realizzati da onicotecnica professionista a Rovetta" loading="lazy" width="800" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+  <div style="position:relative; padding: 0 60px;">
+
+    <!-- Freccia sinistra -->
+    <button id="gallery-prev" aria-label="Precedente" style="
+      position:absolute; left:12px; top:50%; transform:translateY(-50%);
+      z-index:10; width:48px; height:48px; border-radius:50%;
+      background:var(--white); border:1px solid rgba(196,150,122,0.35);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(92,61,46,0.12); transition:background 0.2s, border-color 0.2s;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
+    <!-- Freccia destra -->
+    <button id="gallery-next" aria-label="Successiva" style="
+      position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      z-index:10; width:48px; height:48px; border-radius:50%;
+      background:var(--white); border:1px solid rgba(196,150,122,0.35);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(92,61,46,0.12); transition:background 0.2s, border-color 0.2s;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="gallery-carousel-wrapper">
+      <!-- Slide 0 — le 7 immagini originali -->
+      <div class="gallery-slide" id="gallery-slide-0">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/nail-art-collection-rovetta.webp" alt="Nail art collection con design personalizzati realizzati da onicotecnica professionista a Rovetta" loading="lazy" width="800" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.1);">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Art Collection</span></div>
+            <div class="gallery-item-label">Eleganza senza tempo</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/decorazione-unghie-personalizzata.webp" alt="Trattamento unghie con smalto semipermanente e design esclusivi in Val Seriana" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-item-label">Arte al dettaglio</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/manicure-french-classico-elegante.webp" alt="Manicure con French classico elegante su unghie naturali Softique Beauty Nail" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;transform:scale(1.2);">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-item-label">La moda eterna</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/applicazione-smalto-semipermanente-con-rinforzo.webp" alt="Applicazione di smalto semipermanente con rinforzo per unghie resistenti a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-item-label">Classico o con rinforzo</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/ricostruzione-unghie-glitter-shimmer.webp" alt="Ricostruzione unghie con dettagli glitter e shimmer luminosi ad alta precisione" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-item-label">Brillantezza pura</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/foto3.jpeg" alt="Nail sculpting e modellamento forme unghie perfette in gel nello studio a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-item-label">Forme perfette</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/foto8.png" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Art Collection</span></div>
-      <div class="gallery-item-label">Eleganza senza tempo</div>
-    </div>
-    <!-- Item 2 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/decorazione-unghie-personalizzata.webp" alt="Trattamento unghie con smalto semipermanente e design esclusivi in Val Seriana" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+      <!-- Slide 1 — seconda serie (duplica/sostituisci con altre immagini se disponibili) -->
+      <div class="gallery-slide" id="gallery-slide-1" style="display:none;">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/copertura-gel-rosso-brillante.webp" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/foto1.png" alt="Nail sculpting e modellamento forme unghie perfette in gel" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-item-label">Forme perfette</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/foto4.png" alt="Ricostruzione unghie con dettagli glitter e shimmer" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-item-label">Brillantezza pura</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/foto5.jpeg" alt="Manicure professionale Val Seriana" loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:bottom center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Manicure Pro</span></div>
+            <div class="gallery-item-label">Cura professionale</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/nail-sculpting-ricostruzione-gel-rovetta.webp" alt="Semipermanente con rinforzo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-item-label">Lunga durata</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/foto11.png" alt="French classico elegante" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-item-label">Senza tempo</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/foto2.png" alt="Decorazione unghie personalizzata" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-item-label">Arte al dettaglio</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
-      <div class="gallery-item-label">Arte al dettaglio</div>
-    </div>
-    <!-- Item 3 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/manicure-french-classico-elegante.webp" alt="Manicure con French classico elegante su unghie naturali Softique Beauty Nail" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;transform:scale(1.2);">
+      
+            <div class="gallery-slide" id="gallery-slide-2" style="display:none;">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto3.jpeg" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
+            <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto4.jpeg" alt="Nail sculpting e modellamento forme unghie perfette in gel" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
+            <div class="gallery-item-label">Forme perfette</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto1.jpeg" alt="Ricostruzione unghie con dettagli glitter e shimmer" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-item-label">Brillantezza pura</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto8.png" alt="Manicure professionale Val Seriana" loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Manicure Pro</span></div>
+            <div class="gallery-item-label">Cura professionale</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto6.jpeg" alt="Semipermanente con rinforzo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
+            <div class="gallery-item-label">Lunga durata</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto2.jpeg" alt="French classico elegante" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
+            <div class="gallery-item-label">Senza tempo</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/foto7.png" alt="Decorazione unghie personalizzata" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center;">
+            </div>
+            <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
+            <div class="gallery-item-label">Arte al dettaglio</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
-      <div class="gallery-item-label">La moda eterna</div>
-    </div>
-    <!-- Item 4 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/applicazione-smalto-semipermanente-con-rinforzo.webp" alt="Applicazione di smalto semipermanente con rinforzo per unghie resistenti a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+      <!-- Dots indicatori -->
+      <div style="display:flex; justify-content:center; gap:8px; margin-top:28px;">
+        <button class="gallery-dot active" data-index="0" aria-label="Slide 1" style="
+          width:28px; height:3px; border:none; border-radius:2px;
+          background:var(--deep); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
+        <button class="gallery-dot" data-index="1" aria-label="Slide 2" style="
+          width:14px; height:3px; border:none; border-radius:2px;
+          background:var(--blush); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
+        <button class="gallery-dot" data-index="2" aria-label="Slide 3" style="
+          width:14px; height:3px; border:none; border-radius:2px;
+          background:var(--blush); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
-      <div class="gallery-item-label">Classico o con rinforzo</div>
-    </div>
-    <!-- Item 5 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/ricostruzione-unghie-glitter-shimmer.webp" alt="Ricostruzione unghie con dettagli glitter e shimmer luminosi ad alta precisione" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
-      <div class="gallery-item-label">Brillantezza pura</div>
-    </div>
-    <!-- Item 6 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/nail-sculpting-ricostruzione-gel-rovetta.webp" alt="Nail sculpting e modellamento forme unghie perfette in gel nello studio a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
-      <div class="gallery-item-label">Forme perfette</div>
-    </div>
-    <!-- Item 7 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/copertura-gel-rosso-brillante.webp" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
-      <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
     </div>
   </div>
 </section>
@@ -1484,39 +1706,42 @@
 <section class="testimonials" id="testimonials">
   <div class="testimonials-header">
     <p class="section-eyebrow reveal">Cosa dicono di noi</p>
-    <h2 class="section-title reveal reveal-delay-1">Le <em>nostre</em> clienti</h2>
+    <h2 class="section-title reveal reveal-delay-1">I <em>nostri</em> clienti</h2>
   </div>
   <div class="testimonials-grid">
     <div class="testimonial-card reveal">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.</p>
+      <p class="testimonial-text">Molto brava e professionale! Partivo da una situazione non semplicissima, quindi il lavoro richiedeva ancora più cura e precisione, ma il risultato finale è davvero stupendo. Super soddisfatta del semipermanente!</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(196,150,122,0.12)">GM</div>
         <div class="author-info">
-          <h5>Cristina T.</h5>
+          <h5>Debora T.</h5>
         </div>
       </div>
     </div>
     <div class="testimonial-card reveal reveal-delay-1">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Finalmente ho trovato il posto perfetto per le mie unghie. La qualità dei prodotti e la cura dei dettagli sono semplicemente eccezionali. Consiglio a tutte!</p>
+      <p class="testimonial-text">
+        Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.
+      </p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(184,154,106,0.12)">SL</div>
         <div class="author-info">
-          <h5>Sara L.</h5>
+          <h5>Cristina T.</h5>
         </div>
       </div>
     </div>
     <div class="testimonial-card reveal reveal-delay-2">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">L'ambiente è elegante e rilassante e Roberta è gentilissima e preparata. Lo consiglio vivamente!</p>
+      <p class="testimonial-text"> Sono stata da Softique per una manicure con smalto semipermanente e mi sono trovata davvero benissimo. Fin dal primo momento, Roberta, mi ha fatto sentire accolta e a mio agio, ma soprattutto, mi ha saputo consigliare la tipologia di prodotto ideale da applicare sulle mie unghie. Il lavoro è stato eseguito con grande cura e precisione, e il risultato finale è stato esattamente quello che desideravo. Per non dire che lo smalto è durato 4 settimane. Si vede la passione e l’attenzione che viene dedicata alla cliente. Inoltre l'ambiente è pulito, rilassante e molto piacevole. Consiglio assolutamente di provare, io tornerò sicuramente!
+</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(92,61,46,0.1)">VR</div>
         <div class="author-info">
-          <h5>Valentina R.</h5>
+          <h5>Francesca P.</h5>
         </div>
       </div>
     </div>
@@ -1676,6 +1901,102 @@
     nav.classList.remove('scrolled');
   }
 });
+
+ (function() {
+    const slides  = document.querySelectorAll('.gallery-slide');
+    const dots    = document.querySelectorAll('.gallery-dot');
+    const prev    = document.getElementById('gallery-prev');
+    const next    = document.getElementById('gallery-next');
+    const wrapper = document.querySelector('.gallery-carousel-wrapper');
+    const TOTAL   = slides.length;
+    let current   = 0;
+    let timer     = null;
+    let paused    = false;
+    let animating = false;
+
+    // Pulisci ogni stile inline lasciato dagli script precedenti
+    slides.forEach((s, i) => {
+      s.removeAttribute('style');
+      s.className = 'gallery-slide' + (i === 0 ? ' active' : '');
+    });
+
+    function updateDots() {
+      dots.forEach((d, i) => {
+        d.style.background = i === current ? 'var(--deep)' : 'var(--blush)';
+        d.style.width      = i === current ? '28px' : '14px';
+      });
+    }
+
+    function goTo(index, direction) {
+      if (animating) return;
+      const to  = (index + TOTAL) % TOTAL;
+      if (to === current) return;
+      animating = true;
+
+      const from    = current;
+      const enterClass = direction > 0 ? 'enter-right' : 'enter-left';
+      const exitClass  = direction > 0 ? 'exit-left'   : 'exit-right';
+
+      // Prepara la slide entrante fuori campo (senza transizione)
+      slides[to].style.transition = 'none';
+      slides[to].className = 'gallery-slide ' + enterClass;
+
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        slides[to].style.transition = '';
+
+        // Avvia uscita e entrata insieme
+        slides[from].className = 'gallery-slide ' + exitClass;
+        slides[to].className   = 'gallery-slide active';
+
+        current = to;
+        updateDots();
+
+        setTimeout(() => {
+          // Pulisci la slide uscita
+          slides[from].className = 'gallery-slide';
+          animating = false;
+        }, 1100);
+      }));
+    }
+
+    function scheduleNext() {
+      clearTimeout(timer);
+      if (!paused) {
+        timer = setTimeout(() => {
+          goTo(current + 1, 1);
+          scheduleNext();
+        }, 5000);
+      }
+    }
+
+    prev.addEventListener('click', () => { goTo(current - 1, -1); scheduleNext(); });
+    next.addEventListener('click', () => { goTo(current + 1,  1); scheduleNext(); });
+    dots.forEach(d => d.addEventListener('click', () => {
+      const idx = +d.dataset.index;
+      goTo(idx, idx >= current ? 1 : -1);
+      scheduleNext();
+    }));
+
+    const gallerySection = document.getElementById('gallery');
+    gallerySection.addEventListener('mouseenter', () => { paused = true;  clearTimeout(timer); });
+    gallerySection.addEventListener('mouseleave', () => { paused = false; scheduleNext(); });
+
+    [prev, next].forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = 'var(--rose)';
+        btn.querySelector('svg').style.stroke = 'var(--white)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = 'var(--white)';
+        btn.querySelector('svg').style.stroke = 'var(--deep)';
+      });
+    });
+
+    updateDots();
+    scheduleNext();
+  })();
+
+
 </script>
 </body>
 </html>
