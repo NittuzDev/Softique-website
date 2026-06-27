@@ -9,13 +9,11 @@
 <meta name="description" content="Softique Beauty Nail a Rovetta, Val Seriana. Nail art, manicure, pedicure estetica, semipermanente e copertura gel. Studio di Roberta Paiocchi – prenota il tuo appuntamento.">
 <link rel="canonical" href="https://softiquenail.it/">
 
-<!-- Favicon (Esempio standard) -->
 <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="images/favicon_io/site.webmanifest">
 
-<!-- Open Graph -->
 <meta property="og:title" content="Softique Beauty Nail - Onicotecnica a Rovetta (BG)">
 <meta property="og:description" content="Nail art, manicure, pedicure e semipermanente nel cuore della Val Seriana. Studio elegante, prodotti certificati.">
 <meta property="og:image" content="https://softiquenail.it/images/image_home.jpg">
@@ -40,8 +38,7 @@
     "addressCountry": "IT"
   },
   "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:30", "closes": "19:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday"], "opens": "09:00", "closes": "18:00" }
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:30", "closes": "19:00" }
   ],
   "sameAs": ["https://www.instagram.com/softique_beauty_nail"],
   "employee": { "@type": "Person", "name": "Roberta Paiocchi", "jobTitle": "Onicotecnica" }
@@ -62,10 +59,10 @@
     --deep: #5C3D2E;
     --dark: #1A0F0A;
     --gold: #B89A6A;
-    --light-text: #6E4E3D; /* MIGLIORATO: Scurito leggermente per aumentare la leggibilità */
+    --light-text: #6E4E3D;
     --white: #FFFFFF;
     --section-pad: 100px;
-    --radius-soft: 4px; /* NUOVO: Angoli morbidi per un look più accogliente */
+    --radius-soft: 4px;
   }
 
   html { scroll-behavior: smooth; }
@@ -145,14 +142,73 @@
   }
   .nav-cta:hover { background: var(--rose) !important; }
 
-  .gallery-grid-reverse {
-    grid-template-columns: 1fr 1fr 1.5fr 2fr;
-    margin-top: 3px;
-  }
+  /* CAROUSEL */
+ .gallery-carousel-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  perspective: 1000px;
+}
 
-  .gallery-grid-reverse .gallery-item-tall {
-    grid-row: span 2;
-  }
+.gallery-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateX(120px) scale(0.95);
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 1;
+  transform-origin: center center;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.gallery-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  image-rendering: auto;
+  /* Sfocatura infinitesimale per ridurre effetto moiré su trame fitte */
+  filter: blur(0.3px);
+}
+
+.gallery-slide.active {
+  opacity: 1;
+  transform: translateX(0) scale(1.001);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* Slide che esce verso sinistra */
+.gallery-slide.exit-left {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.95);
+}
+
+/* Slide che esce verso destra */
+.gallery-slide.exit-right {
+  opacity: 0;
+  transform: translateX(120px) scale(0.95);
+}
+
+/* Slide che entra da sinistra */
+.gallery-slide.enter-left {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.95);
+}
+
+/* Slide che entra da destra */
+.gallery-slide.enter-right {
+  opacity: 0;
+  transform: translateX(120px) scale(0.95);
+}
 
   /* ── HERO ── */
   .hero {
@@ -185,7 +241,7 @@
     font-size: clamp(52px, 5.5vw, 80px);
     font-weight: 300;
     line-height: 1.08;
-    letter-spacing: 0.02em; /* MIGLIORATO: Lettere leggermente distanziate per eleganza */
+    letter-spacing: 0.02em;
     color: var(--dark);
     margin-bottom: 32px;
     opacity: 0;
@@ -213,7 +269,6 @@
     animation: fadeUp 0.9s 0.65s forwards;
   }
   
-  /* MIGLIORATO: Trasformato l'anonimo btn-ghost della hero in una CTA solida e accattivante */
   .hero-actions .btn-ghost {
     background: var(--deep);
     color: var(--white);
@@ -234,7 +289,7 @@
     background: var(--rose);
     transform: translateY(-2px);
   }
-  .hero-actions .btn-ghost::after { content: none; } /* Rimossa la freccia superflua */
+  .hero-actions .btn-ghost::after { content: none; }
 
   .hero-right {
     position: relative;
@@ -465,16 +520,16 @@
   .services-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px; /* MIGLIORATO: Aggiunto gap visivo per staccare leggermente le card anziché l'effetto blocco unico */
+    gap: 16px;
     background: transparent;
   }
   .service-card {
-    background: rgba(255, 255, 255, 0.05); /* Più visibile rispetto allo 0.02 precedente */
+    background: rgba(255, 255, 255, 0.05);
     padding: 44px 32px;
     position: relative;
     overflow: hidden;
     border-radius: var(--radius-soft);
-    border: 1px solid rgba(255, 255, 255, 0.12); /* Bordino iniziale più marcato */
+    border: 1px solid rgba(255, 255, 255, 0.12);
     transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     cursor: default;
   }
@@ -489,14 +544,14 @@
     transform-origin: left;
   }
   .service-card:hover { 
-    background: rgba(196, 150, 122, 0.15); /* Sfondo rosa/bronzo più evidente */
+    background: rgba(196, 150, 122, 0.15);
     transform: translateY(-6px);
-    border-color: var(--rose); /* Il bordo diventa del colore del brand */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Crea profondità dello stacco */
+    border-color: var(--rose);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   }
 
   .service-card:hover p {
-    color: var(--white); /* Il testo diventa bianchissimo all'hover */
+    color: var(--white);
   }
 
   .service-card:hover::before { transform: scaleX(1); }
@@ -504,15 +559,15 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 52px;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.25); /* MIGLIORATO: Portato da 0.06 a 0.25 per renderlo visibile fin da subito */
+    color: rgba(255, 255, 255, 0.25);
     line-height: 1;
     margin-bottom: 28px;
-    transition: color 0.4s ease, transform 0.4s ease; /* Transizione fluida anche per il movimento */
+    transition: color 0.4s ease, transform 0.4s ease;
     display: inline-block;
   }
   .service-card:hover .service-num { 
-    color: var(--gold); /* Oppure var(--rose) se preferisci il rosa rispetto all'oro */
-    transform: scale(1.05); /* Un leggerissimo ingrandimento elegante */ 
+    color: var(--gold);
+    transform: scale(1.05);
   }
   .service-icon {
     width: 40px; height: 40px;
@@ -534,7 +589,7 @@
   .service-card p {
     font-size: 13px;
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.8); /* Molto più leggibile senza hover */
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 300;
     margin-bottom: 24px;
     transition: color 0.3s ease;
@@ -619,14 +674,15 @@
   .gallery-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    grid-template-rows: 260px 260px;
-    gap: 8px; /* MIGLIORATO: Gap più arioso per far respirare le immagini */
+    grid-auto-rows: 260px;
+    gap: 8px;
     padding: 0 60px;
   }
   .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-soft); /* Applicato arrotondamento soft */
+    border-radius: var(--radius-soft);
+    cursor: pointer;
   }
   .gallery-item-bg {
     position: absolute;
@@ -645,10 +701,12 @@
   .gallery-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(26,15,10,0.3);
+    background: rgba(26,15,10,0.35);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -659,6 +717,13 @@
     text-transform: uppercase;
     color: var(--white);
     font-weight: 400;
+  }
+  .gallery-overlay-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white);
   }
   .gallery-item-label {
     position: absolute;
@@ -681,6 +746,82 @@
     pointer-events: none;
   }
 
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(26,15,10,0.96);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.open {
+    display: flex;
+  }
+  .lightbox-img-wrap {
+    position: relative;
+    max-width: 92vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-img-wrap img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    user-select: none;
+  }
+  .lightbox-caption {
+    position: absolute;
+    bottom: -36px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 20px; right: 24px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+    transition: color 0.2s;
+    padding: 4px 10px;
+  }
+  .lightbox-close:hover { color: var(--rose); }
+  .lightbox-nav {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 10000;
+  }
+  .lightbox-nav:hover { background: var(--rose); border-color: var(--rose); }
+  .lightbox-nav.prev { left: 16px; }
+  .lightbox-nav.next { right: 16px; }
+
   /* ── TESTIMONIALS ── */
   .testimonials {
     padding: var(--section-pad) 60px;
@@ -700,6 +841,8 @@
     padding: 40px 36px;
     position: relative;
     border-radius: var(--radius-soft);
+    display: flex;           /* Aggiungi questa riga */
+    flex-direction: column;  /* Aggiungi questa riga */
   }
   .quote-mark {
     font-family: 'Cormorant Garamond', serif;
@@ -725,6 +868,7 @@
     gap: 14px;
     border-top: 1px solid var(--blush);
     padding-top: 20px;
+    margin-top: auto;        /* Aggiungi questa riga */
   }
   .author-avatar {
     width: 42px; height: 42px;
@@ -754,65 +898,6 @@
     font-size: 12px;
     letter-spacing: 2px;
   }
-
-  /* ── BOOKING ── */
-  .booking {
-    padding: var(--section-pad) 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    align-items: center;
-  }
-  .booking-form-wrap {
-    background: var(--white);
-    padding: 54px;
-    border: 1px solid rgba(196,150,122,0.15);
-    border-radius: var(--radius-soft);
-  }
-  .form-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--dark);
-    margin-bottom: 36px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--light-text);
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid rgba(92,61,46,0.2);
-    background: transparent;
-    padding: 12px 0;
-    font-family: 'Jost', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--dark);
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .form-group input:focus,
-  .form-group select:focus {
-    border-bottom-color: var(--rose);
-  }
-  .form-group input::placeholder { color: var(--blush); }
 
   /* ── INFO ── */
   .info-grid {
@@ -853,7 +938,7 @@
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr; /* MIGLIORATO: Bilanciata a 3 colonne per rimuovere il buco della colonna vuota */
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 60px;
     margin-bottom: 60px;
   }
@@ -954,19 +1039,6 @@
     top: 10px;
   }
 
-  @media (max-width: 768px) {
-    .contatti {
-      padding: var(--section-pad) 24px;
-    }
-    .contatti-inner {
-      grid-template-columns: 1fr;
-      gap: 44px;
-    }
-    .contatti-map {
-      height: 320px;
-      top: 0;
-    }
-  }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -1019,7 +1091,7 @@
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
   
-  /* MIGLIORATO: Cambia il colore delle linee dell'hamburger quando aperto sul menu mobile beige */
+  /* Colore delle linee hamburger quando aperto sul menu mobile */
   .hamburger.open span {
     background: var(--rose);
   }
@@ -1135,23 +1207,89 @@
     }
     .process-steps::before { display: none; }
 
-    /* GALLERY */
+    /* GALLERY — mobile: unico scroller orizzontale su tutte le foto */
     .gallery-header {
       padding: 0 24px;
       flex-direction: column;
       align-items: flex-start;
       gap: 14px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
+
+    /* Il wrapper esterno perde il padding laterale su mobile */
+    .gallery-outer-wrap {
+      padding: 0 !important;
+    }
+
+    /* Bottoni freccia: sovrapposti, navigano foto per foto */
+    #gallery-prev, #gallery-next {
+      background: rgba(255,255,255,0.22) !important;
+      border-color: rgba(255,255,255,0.35) !important;
+      box-shadow: none !important;
+      width: 40px !important;
+      height: 40px !important;
+    }
+    #gallery-prev svg, #gallery-next svg {
+      stroke: white !important;
+    }
+    #gallery-prev { left: 8px !important; }
+    #gallery-next { right: 8px !important; }
+
+    /* Su mobile: il carousel-wrapper diventa lo scroller piatto */
+    .gallery-carousel-wrapper {
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      height: 72vw;
+      min-height: 260px;
+      max-height: 440px;
+      scroll-behavior: smooth;
+    }
+    .gallery-carousel-wrapper::-webkit-scrollbar { display: none; }
+
+    /* Ogni slide diventa invisibile come contenitore: le sue foto escono flat */
+    .gallery-slide {
+      display: contents !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+
+    /* Ogni griglia diventa flex row inline */
     .gallery-grid {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: repeat(4, 180px);
-      gap: 8px;
-      padding: 0 24px;
+      display: contents !important;
     }
-    .gallery-item:nth-child(1) {
-      grid-row: span 1;
-      grid-column: span 2;
+
+    /* Ogni foto: larghezza intera, altezza piena, snap — visibile sempre */
+    .gallery-carousel-wrapper .gallery-item {
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      scroll-snap-align: start !important;
+      border-radius: 0 !important;
+      cursor: pointer;
+      position: relative !important;
+      opacity: 1 !important;
+      display: block !important;
+      pointer-events: auto !important;
+      transform: none !important;
+    }
+    /* Il background-wrapper si espande a coprire tutta la foto */
+    .gallery-carousel-wrapper .gallery-item-bg {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .gallery-carousel-wrapper .gallery-item-bg img {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
     }
 
     /* TESTIMONIALS */
@@ -1171,6 +1309,18 @@
       text-align: center;
     }
     .footer-desc { max-width: 100%; }
+
+        .contatti {
+      padding: var(--section-pad) 24px;
+    }
+    .contatti-inner {
+      grid-template-columns: 1fr;
+      gap: 44px;
+    }
+    .contatti-map {
+      height: 320px;
+      top: 0;
+    }
   }
 
   /* ── RESPONSIVE 480px ── */
@@ -1196,10 +1346,8 @@
     .process-steps { grid-template-columns: 1fr; gap: 32px; }
 
     .gallery-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, 200px);
+      height: 80vw;
     }
-    .gallery-item:nth-child(1) { grid-column: span 1; }
 
     .footer-grid { grid-template-columns: 1fr; }
     .footer-brand { grid-column: span 1; }
@@ -1211,7 +1359,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="navbar">
   <a href="https://softiquenail.it/" class="nav-logo">Softique Beauty Nail<span> by Roberta Paiocchi</span></a>
   <ul class="nav-links">
@@ -1236,12 +1383,11 @@
   <a href="#contatti" class="menu-link">Contatti</a>
 </div>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-left">
 
+    <p class="hero-eyebrow">Studio Onicotecnica Rovetta - Bergamo</p>
     <h1 class="hero-title">
-      <span style="font-size: 10px; display: block; letter-spacing: 0.4em; text-transform: uppercase; color: var(--rose); font-weight: 500; margin-bottom: 10px;">Studio Onicotecnica Rovetta - Bergamo</span>
       Le tue unghie,<br>
       il tuo <em>carattere</em>
     </h1>
@@ -1268,7 +1414,6 @@
   </div>
 </section>
 
-<!-- MARQUEE -->
 <div class="marquee-strip">
   <div class="marquee-inner">
     <span class="marquee-item">Nail Art Professionale</span>
@@ -1294,10 +1439,9 @@
   </div>
 </div>
 
-<!-- ABOUT -->
 <section class="about" id="about">
   <div class="about-visual reveal">
-    <div class="about-block-main" style="border:1px solid #B89A6A;">
+    <div class="about-block-main">
     <img src="images/manicure-professionale-val-seriana.webp" 
      alt="Dettaglio unghie" 
      loading="lazy" 
@@ -1345,7 +1489,6 @@
   </div>
 </section>
 
-<!-- SERVICES -->
 <section class="services" id="services">
   <div class="services-header">
     <div>
@@ -1381,7 +1524,6 @@
   </div>
 </section>
 
-<!-- PROCESS -->
 <section class="process">
   <p class="section-eyebrow reveal">Come funziona</p>
   <h2 class="section-title reveal reveal-delay-1">La tua esperienza <em>Softique</em></h2>
@@ -1412,7 +1554,6 @@
   </div>
 </section>
 
-<!-- GALLERY -->
 <section class="gallery" id="gallery">
   <div class="gallery-header">
     <div>
@@ -1420,110 +1561,249 @@
       <h2 class="section-title reveal reveal-delay-1">Gallery</h2>
     </div>
   </div>
-  <div class="gallery-grid">
-    <!-- Item 1 — grande -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/nail-art-collection-rovetta.webp" alt="Nail art collection con design personalizzati realizzati da onicotecnica professionista a Rovetta" loading="lazy" width="800" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+  <div class="gallery-outer-wrap" style="position:relative; padding: 0 60px;">
+
+    <button id="gallery-prev" aria-label="Precedente" style="
+      position:absolute; left:12px; top:50%; transform:translateY(-50%);
+      z-index:10; width:48px; height:48px; border-radius:50%;
+      background:var(--white); border:1px solid rgba(196,150,122,0.35);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(92,61,46,0.12); transition:background 0.2s, border-color 0.2s;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
+    <button id="gallery-next" aria-label="Successiva" style="
+      position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      z-index:10; width:48px; height:48px; border-radius:50%;
+      background:var(--white); border:1px solid rgba(196,150,122,0.35);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(92,61,46,0.12); transition:background 0.2s, border-color 0.2s;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--deep)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="gallery-carousel-wrapper">
+      <div class="gallery-slide" id="gallery-slide-0">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/nail-art-collection-rovetta.webp" alt="Un'inquadratura ravvicinata e stilizzata di una mano con unghie quadrate di media lunghezza, dipinte con uno smalto blu cobalto profondo e lucido. Una manica di felpa grigia e morbida si piega intorno alla mano, creando un contrasto di texture con la finitura lucida delle unghie. La nail art è precisa e definita." loading="lazy" width="800" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.1);">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Nail art cobalto squadrata</span></div>
+            <div class="gallery-item-label">Stile moderno, colore intenso e definito</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/decorazione-unghie-personalizzata.webp" alt="Un'inquadratura ravvicinata e artistica delle unghie a mandorla, con una decorazione personalizzata sfumata. Una delicata transizione di colore dal nudo all'arancione bruciato/ambra si fonde con micro-scaglie glitter viola-olografiche e accenti dorati. La finitura è trasparente e lucida, evidenziando il design unico." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Decorazione personalizzata</span></div>
+            <div class="gallery-item-label">L'arte sfumata, la tua unicità</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/manicure-french-classico-elegante.webp" alt="Un'immagine nitida di una manicure French classica ed elegante su unghie ovali. La base nudo-trasparente si abbina perfettamente alle punte bianche pulite e precise. La mano è leggermente piegata, mostrando l'aspetto senza tempo e impeccabile di questa manicure tradizionale." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;transform:scale(1.2);">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">French classico elegante</span></div>
+            <div class="gallery-item-label">La perfezione senza tempo della French</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/applicazione-smalto-semipermanente-con-rinforzo.webp" alt="Primo piano di una mano con unghie corte e curate, dipinte con un lucido smalto semipermanente marrone scuro cioccolato. Lo smalto riflette la luce, mostrandone la finitura brillante e impeccabile su unghie con un leggero rinforzo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Semipermanente con rinforzo</span></div>
+            <div class="gallery-item-label">Eleganza profonda, lucentezza duratura</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/ricostruzione-unghie-glitter-shimmer.webp" alt="Un'immagine a fuoco ravvicinato di una mano con una ricostruzione unghie gel nudo-rosa chiaro, con una finitura shimmer lucida. L'unghia dell'anulare presenta un design scintillante e texturizzato con scaglie glitter rosa-rame/oro rosa e brillantini olografici. Il resto delle unghie ha una finitura shimmer sottile e delicata. La mano tiene delicatamente la manica di un jeans in denim." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
+            <div class="gallery-item-label">Un tocco scintillante, eleganza delicata</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/copertura-unghie-naturali-corte-colore-rosso-acceso.webp" alt="Un'immagine dettagliata di una mano con unghie corte e naturali, modellate delicatamente. La copertura in smalto rosso acceso, vibrante e brillante, è applicata con precisione su ciascuna unghia, che appare lucida e uniforme. Il rosso classico risalta sullo sfondo neutro della pelle." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Copertura unghie corte</span></div>
+            <div class="gallery-item-label">Vibrante energia in rosso acceso</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide1/manicure-unghie-naturali-con-semipermanente-blu.webp" alt="Una mano presenta unghie naturali corte e ovali dipinte con uno smalto semipermanente blu brillante, coprente e lucido. Il colore vivido risalta sulla pelle, mostrando una manicure fresca e pulita." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure semipermanente blu</span></div>
+            <div class="gallery-item-label">L'azzurro del cielo sulle tue unghie</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Art Collection</span></div>
-      <div class="gallery-item-label">Eleganza senza tempo</div>
-    </div>
-    <!-- Item 2 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/decorazione-unghie-personalizzata.webp" alt="Trattamento unghie con smalto semipermanente e design esclusivi in Val Seriana" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+      <div class="gallery-slide" id="gallery-slide-1">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/copertura-gel-rosso-brillante.webp" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Copertura in gel rosso</span></div>
+            <div class="gallery-item-label">Il classico che non stanca mai</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/copertura-gel-unghie-colore-rosa-ciclamino-luminoso.webp" alt="Dettaglio di unghie dalla forma ovale perfetta, rivestite da un gel color rosa ciclamino intenso e luminoso, distese su uno sfondo pastello coordinato." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Copertura gel ciclamino</span></div>
+            <div class="gallery-item-label">Energia e femminilità sulle mani</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/ricostruzione-unghie-baby-boomer-quadrate.webp" alt=Ricostruzione unghie lunghe e quadrate con una perfetta sfumatura baby boomer, che passa gradualmente dal rosa della base al bianco latte della punta." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Ricostruzione baby boomer</span></div>
+            <div class="gallery-item-label">Sfumature impeccabili per ogni occasione</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/manicure-unghie-ovali-rosa-neon-lucido.webp" alt="Unghie ovali di media lunghezza stese con un gel rosa neon acceso e super laccato, una scelta vibrante, giovanile e ad alta visibilità." loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:bottom center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure rosa neon</span></div>
+            <div class="gallery-item-label">Accendi lo stile con audacia</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/nail-sculpting-ricostruzione-gel-rovetta.webp" alt="Primo piano di unghie corte squadrate con angoli smussati, ricoperte da un gel blu navy scuro e profondo, caratterizzato da un riflesso lucido a specchio." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Ricostruzione gel scuro</span></div>
+            <div class="gallery-item-label">Profondità magnetica e stile deciso</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/manicure-curativa-unghie-gel-nude-delicato.webp" alt="Primo piano di una mano curata che mostra unghie corte a mandorla, con una copertura in gel nude beige traslucido, dall'aspetto estremamente pulito, sano e minimalista." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure gel nude</span></div>
+            <div class="gallery-item-label">Bellezza autentica e senza tempo</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide2/copertura-unghie-naturali-rosa-baby-con-shimmer.webp" alt="Mano femminile in posa con unghie corte e naturali trattate con un gel rosa baby delicato, arricchito da un finissimo micro-shimmer che cattura la luce." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Copertura unghie naturali</span></div>
+            <div class="gallery-item-label">La delicatezza incontra il trend</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Design Esclusivi</span></div>
-      <div class="gallery-item-label">Arte al dettaglio</div>
-    </div>
-    <!-- Item 3 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/manicure-french-classico-elegante.webp" alt="Manicure con French classico elegante su unghie naturali Softique Beauty Nail" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: 70% center;transform:scale(1.2);">
+      
+      <div class="gallery-slide" id="gallery-slide-2">
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/ricostruzione-unghie-gel-nude-effetto-shimmer-brillantinato.webp" alt="Una mano femminile esce delicatamente dalla manica di un maglione di lana grigia. Le unghie, dalla forma ovale, sono ricoperte da un gel nude rosato molto chiaro impreziosito da un sottile shimmer glitterato brillante." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Ricostruzione gel shimmer</span></div>
+            <div class="gallery-item-label">Bagliori di stelle sulle mani</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/manicure-rosa-pastello-con-accent-nail-foil-glitter.webp" alt="Dettaglio di una manicure dove la maggior parte delle unghie è rosa pastello coprente, mentre l'unghia dell'anulare è decorata con un'accent nail di foil rosa metallico e glitter scintillanti." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Accent nail foil/glitter</span></div>
+            <div class="gallery-item-label">Dettagli preziosi che fanno la differenza</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/manicure-base-nude-con-glitter-rosa-cuticole.webp" alt="Inquadratura ravvicinata di una mano con unghie corte dalla forma quadrata e base nude rosata naturale. Sul bordo libero è presente una sottile linea di glitter rosa scuro/ciclamino." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Manicure con glitter</span></div>
+            <div class="gallery-item-label">Bagliori di luce per ogni giorno</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/applicazione-smalto-semipermanente-verde-bosco-lucido.webp" alt="Manicure su unghie corte squadrate rivestite da uno smalto gel verde scuro bosco profondo e intenso, dalla finitura lucida e impeccabile." loading="lazy" width="600" height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Smalto semipermanente rinforzato</span></div>
+            <div class="gallery-item-label">Riflessi profondi e specchiati</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/french-manicure-colorata-fucsia-fluo.webp" alt="Dettaglio di una mano appoggiata su una superficie neutra che mostra una french manicure colorata. La base è nude e la lunetta è di un vivace fucsia fluo" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">French manicure colorata</span></div>
+            <div class="gallery-item-label">Sorriso pop sulle tue dita</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/copertura-unghie-gel-colore-lilla-ciclamino.webp" alt="Primage di una mano femminile con unghie corte e curate, smaltate con un gel color lilla ciclamino lucido e uniforme" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center;transform:scale(1.2)">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Copertura gel colore</span></div>
+            <div class="gallery-item-label">Un tocco floreale sulla pelle</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-item-bg">
+              <img src="images/slide3/ricostruzione-unghie-gel-bianco-lattiginoso-effetto-milky.webp" alt="Primo piano di una ricostruzione unghie in gel dalla forma ovale allungata. Il colore è un bianco lattiginoso coprente ma semi-trasparente, pulito ed elegante, noto come effetto milky." loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center;">
+            </div>
+            <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><span class="gallery-overlay-text">Ricostruzione gel milky</span></div>
+            <div class="gallery-item-label">Eleganza pura e soffice</div>
+          </div>
+        </div>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">French classico</span></div>
-      <div class="gallery-item-label">La moda eterna</div>
-    </div>
-    <!-- Item 4 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/applicazione-smalto-semipermanente-con-rinforzo.webp" alt="Applicazione di smalto semipermanente con rinforzo per unghie resistenti a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+
+      <div style="display:flex; justify-content:center; gap:8px; margin-top:28px;">
+        <button class="gallery-dot active" data-index="0" aria-label="Slide 1" style="
+          width:28px; height:3px; border:none; border-radius:2px;
+          background:var(--deep); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
+        <button class="gallery-dot" data-index="1" aria-label="Slide 2" style="
+          width:14px; height:3px; border:none; border-radius:2px;
+          background:var(--blush); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
+        <button class="gallery-dot" data-index="2" aria-label="Slide 3" style="
+          width:14px; height:3px; border:none; border-radius:2px;
+          background:var(--blush); cursor:pointer; padding:0; transition:background 0.3s, width 0.3s;"></button>
       </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Semipermanente</span></div>
-      <div class="gallery-item-label">Classico o con rinforzo</div>
-    </div>
-    <!-- Item 5 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/ricostruzione-unghie-glitter-shimmer.webp" alt="Ricostruzione unghie con dettagli glitter e shimmer luminosi ad alta precisione" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Glitter & Shimmer</span></div>
-      <div class="gallery-item-label">Brillantezza pura</div>
-    </div>
-    <!-- Item 6 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/nail-sculpting-ricostruzione-gel-rovetta.webp" alt="Nail sculpting e modellamento forme unghie perfette in gel nello studio a Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: center">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Nail Sculpting</span></div>
-      <div class="gallery-item-label">Forme perfette</div>
-    </div>
-    <!-- Item 7 -->
-    <div class="gallery-item">
-      <div class="gallery-item-bg">
-        <img src="images/copertura-gel-rosso-brillante.webp" alt="Copertura gel con smalto rosso brillante classico Softique Beauty Nail Rovetta" loading="lazy" width="500" height="500" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position: top center">
-      </div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Colori brillanti</span></div>
-      <div class="gallery-item-label">Scegli il colore che ti rappresenta</div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section class="testimonials" id="testimonials">
   <div class="testimonials-header">
     <p class="section-eyebrow reveal">Cosa dicono di noi</p>
-    <h2 class="section-title reveal reveal-delay-1">Le <em>nostre</em> clienti</h2>
+    <h2 class="section-title reveal reveal-delay-1">I <em>nostri</em> clienti</h2>
   </div>
   <div class="testimonials-grid">
     <div class="testimonial-card reveal">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.</p>
+      <p class="testimonial-text">Molto brava e professionale! Partivo da una situazione non semplicissima, quindi il lavoro richiedeva ancora più cura e precisione, ma il risultato finale è davvero stupendo. Super soddisfatta del semipermanente!</p>
       <div class="testimonial-author">
-        <div class="author-avatar" style="background:rgba(196,150,122,0.12)">GM</div>
+        <div class="author-avatar" style="background:rgba(196,150,122,0.12)">DT</div>
         <div class="author-info">
-          <h5>Cristina T.</h5>
+          <h5>Debora T.</h5>
         </div>
       </div>
     </div>
     <div class="testimonial-card reveal reveal-delay-1">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">Finalmente ho trovato il posto perfetto per le mie unghie. La qualità dei prodotti e la cura dei dettagli sono semplicemente eccezionali. Consiglio a tutte!</p>
+      <p class="testimonial-text">
+        Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.
+      </p>
       <div class="testimonial-author">
-        <div class="author-avatar" style="background:rgba(184,154,106,0.12)">SL</div>
+        <div class="author-avatar" style="background:rgba(184,154,106,0.12)">CT</div>
         <div class="author-info">
-          <h5>Sara L.</h5>
+          <h5>Cristina T.</h5>
         </div>
       </div>
     </div>
     <div class="testimonial-card reveal reveal-delay-2">
       <span class="stars">★★★★★</span>
       <span class="quote-mark">"</span>
-      <p class="testimonial-text">L'ambiente è elegante e rilassante e Roberta è gentilissima e preparata. Lo consiglio vivamente!</p>
+      <p class="testimonial-text"> Sono stata da Softique per una manicure con smalto semipermanente e mi sono trovata davvero benissimo. Fin dal primo momento, Roberta, mi ha fatto sentire accolta e a mio agio, ma soprattutto, mi ha saputo consigliare la tipologia di prodotto ideale da applicare sulle mie unghie. Il lavoro è stato eseguito con grande cura e precisione, e il risultato finale è stato esattamente quello che desideravo. Per non dire che lo smalto è durato 4 settimane. Si vede la passione e l’attenzione che viene dedicata alla cliente. Inoltre l'ambiente è pulito, rilassante e molto piacevole. Consiglio assolutamente di provare, io tornerò sicuramente!
+</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:rgba(92,61,46,0.1)">VR</div>
         <div class="author-info">
-          <h5>Valentina R.</h5>
+          <h5>Francesca P.</h5>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTATTI -->
 <section class="contatti" id="contatti">
   <div class="contatti-inner">
     <div class="contatti-left">
@@ -1558,10 +1838,10 @@
         <div class="info-item">
           <div class="info-icon">🕐</div>
           <div class="info-text">
-            <h4>Orari</h4>
+            <h4>Orari - <b>(Si riceve solo su appuntamento)</b></h4>
             <p>
-              Lun – Ven: 14:15 – 19:00<br>
-              Sabato: 09:00 – 18:00<br>
+              Lun – Ven: 14:30 – 19:00<br>
+              Sabato: Chiuso<br>
               Domenica: Chiuso
             </p>
           </div>
@@ -1578,7 +1858,6 @@
       </div>
     </div>
 
-    <!-- NOTA: Inserisci qui l'URL reale ottenuto da Google Maps (Condividi -> Incorpora Mappa) -->
     <div class="contatti-map reveal reveal-delay-3">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2776.962148080561!2d9.982497790855547!3d45.892070130240775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4783e724b168fff7%3A0x8125aad1ea0e699a!2sSoftique%20Beauty%20Nail!5e0!3m2!1sit!2sit!4v1780404559081!5m2!1sit!2sit"
@@ -1592,7 +1871,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
@@ -1600,8 +1878,8 @@
       <p class="footer-desc">
         Un rifugio di bellezza e benessere nel cuore di Rovetta. Dove ogni dettaglio racconta una storia di cura e passione.
       </p>
+      <br/>
     </div>
-    <!-- RIGENERATO: Rimosso il blocco vuoto commentato. Ora la griglia ospita in modo pulito le 2 sezioni rimanenti -->
     <div class="footer-col">
       <h4>Studio</h4>
       <ul>
@@ -1619,10 +1897,24 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2026 Softique Beauty Nail. Tutti i diritti riservati.</span>
+    <span class="footer-copy">© 2026 Softique Beauty Nail di Roberta Paiocchi - P.I.: 04888910165</span>
     <span class="footer-tagline">Beauty is an art, not an accident.</span>
   </div>
 </footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Immagine ingrandita">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Chiudi">✕</button>
+  <button class="lightbox-nav prev" id="lightbox-prev" aria-label="Precedente">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="lightbox-img-wrap">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+  <button class="lightbox-nav next" id="lightbox-next" aria-label="Successiva">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
 
 <script>
 
@@ -1669,13 +1961,325 @@
   
 
   window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav'); // o il tuo selettore
-  if (window.scrollY > 50) { // soglia in pixel
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
+  const nav = document.querySelector('nav');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
 });
+
+ (function() {
+    const slides  = document.querySelectorAll('.gallery-slide');
+    const dots    = document.querySelectorAll('.gallery-dot');
+    const prev    = document.getElementById('gallery-prev');
+    const next    = document.getElementById('gallery-next');
+    const wrapper = document.querySelector('.gallery-carousel-wrapper');
+    const TOTAL   = slides.length;
+    let current   = 0;
+    let timer     = null;
+    let paused    = false;
+    let animating = false;
+
+    // Pulisci ogni stile inline lasciato dagli script precedenti
+    slides.forEach((s, i) => {
+      s.removeAttribute('style');
+      s.className = 'gallery-slide' + (i === 0 ? ' active' : '');
+    });
+
+    function updateDots() {
+      dots.forEach((d, i) => {
+        d.style.background = i === current ? 'var(--deep)' : 'var(--blush)';
+        d.style.width      = i === current ? '28px' : '14px';
+      });
+    }
+
+    function goTo(index, direction) {
+      if (animating) return;
+      const to  = (index + TOTAL) % TOTAL;
+      if (to === current) return;
+      animating = true;
+
+      const from    = current;
+      const enterClass = direction > 0 ? 'enter-right' : 'enter-left';
+      const exitClass  = direction > 0 ? 'exit-left'   : 'exit-right';
+
+      // Prepara la slide entrante fuori campo (senza transizione)
+      slides[to].style.transition = 'none';
+      slides[to].className = 'gallery-slide ' + enterClass;
+
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        slides[to].style.transition = '';
+
+        // Avvia uscita e entrata insieme
+        slides[from].className = 'gallery-slide ' + exitClass;
+        slides[to].className   = 'gallery-slide active';
+
+        // Reset scroll on incoming grid for mobile
+        const toGrid = slides[to].querySelector('.gallery-grid');
+        if (toGrid) toGrid.scrollLeft = 0;
+
+        current = to;
+        updateDots();
+
+        setTimeout(() => {
+          // Pulisci la slide uscita
+          slides[from].className = 'gallery-slide';
+          animating = false;
+        }, 1100);
+      }));
+    }
+
+    function scheduleNext() {
+      clearTimeout(timer);
+      if (!paused) {
+        timer = setTimeout(() => {
+          goTo(current + 1, 1);
+          scheduleNext();
+        }, 5000);
+      }
+    }
+
+    prev.addEventListener('click', () => { goTo(current - 1, -1); scheduleNext(); });
+    next.addEventListener('click', () => { goTo(current + 1,  1); scheduleNext(); });
+    dots.forEach(d => d.addEventListener('click', () => {
+      const idx = +d.dataset.index;
+      goTo(idx, idx >= current ? 1 : -1);
+      scheduleNext();
+    }));
+
+    const gallerySection = document.getElementById('gallery');
+    gallerySection.addEventListener('mouseenter', () => { paused = true;  clearTimeout(timer); });
+    gallerySection.addEventListener('mouseleave', () => { paused = false; scheduleNext(); });
+
+    [prev, next].forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = 'var(--rose)';
+        btn.querySelector('svg').style.stroke = 'var(--white)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = 'var(--white)';
+        btn.querySelector('svg').style.stroke = 'var(--deep)';
+      });
+    });
+
+    updateDots();
+    scheduleNext();
+  })();
+
+  // ── MOBILE GALLERY: unico scroller flat, tasti e swipe ──
+  (function() {
+    function isMobile() { return window.innerWidth <= 768; }
+
+    // Restituisce il wrapper su mobile, null su desktop
+    function getScroller() {
+      return isMobile() ? document.querySelector('.gallery-carousel-wrapper') : null;
+    }
+
+    // Calcola la larghezza di un "passo" (= larghezza dello scroller)
+    function stepWidth(scroller) {
+      return scroller.clientWidth;
+    }
+
+    // Naviga di +1 o -1 foto con scroll fluido
+    function mobileNavigate(dir) {
+      const scroller = getScroller();
+      if (!scroller) return;
+     
+      const w = stepWidth(scroller);
+     
+      // 1. Calcola l'indice della foto su cui ci troviamo ora (0 = prima foto)
+      const currentIndex = Math.round(scroller.scrollLeft / w);
+     
+      // 2. Conta il numero totale di foto presenti nel carosello mobile
+      const totalItems = scroller.querySelectorAll('.gallery-item').length;
+     
+      // Controllo di Fine/Inizio Corsa basato sugli indici
+      if (dir === 1 && currentIndex >= totalItems - 1) {
+        // Se andiamo "Avanti" e siamo all'ultima foto, torna alla prima (indice 0)
+        scroller.scrollTo({ left: 0, behavior: 'smooth' });
+        return;
+      } else if (dir === -1 && currentIndex <= 0) {
+        // Se andiamo "Indietro" e siamo alla prima foto, vai all'ultima
+        scroller.scrollTo({ left: (totalItems - 1) * w, behavior: 'smooth' });
+        return;
+      }
+     
+      // Scorrimento standard
+      scroller.scrollBy({ left: dir * w, behavior: 'smooth' });
+    }
+
+    // Intercetta i tasti su mobile
+    const prevBtn = document.getElementById('gallery-prev');
+    const nextBtn = document.getElementById('gallery-next');
+
+    prevBtn.addEventListener('click', function(e) {
+      if (!isMobile()) return; // lascia agire la logica desktop
+      e.stopImmediatePropagation();
+      mobileNavigate(-1);
+    }, true); // capture: true → scatta prima del listener desktop
+
+    nextBtn.addEventListener('click', function(e) {
+      if (!isMobile()) return;
+      e.stopImmediatePropagation();
+      mobileNavigate(1);
+    }, true);
+
+    // Swipe con velocità controllata (scroll momentum ridotto)
+    (function() {
+      const scroller = document.querySelector('.gallery-carousel-wrapper');
+      if (!scroller) return;
+
+      let startX = null;
+      let startScroll = null;
+      let isDragging = false;
+
+      scroller.addEventListener('touchstart', function(e) {
+        if (!isMobile()) return;
+        startX = e.touches[0].clientX;
+        startScroll = scroller.scrollLeft;
+        isDragging = true;
+        // Disabilita temporaneamente scroll-behavior smooth per il drag diretto
+        scroller.style.scrollBehavior = 'auto';
+      }, { passive: true });
+
+      scroller.addEventListener('touchmove', function(e) {
+        if (!isMobile() || !isDragging || startX === null) return;
+        const dx = startX - e.touches[0].clientX;
+        // Segui il dito 1:1 ma con attrito (fattore 0.8 per rallentare leggermente)
+        scroller.scrollLeft = startScroll + dx * 0.85;
+      }, { passive: true });
+
+      scroller.addEventListener('touchend', function(e) {
+        if (!isMobile() || !isDragging) return;
+        isDragging = false;
+        const dx = startX - e.changedTouches[0].clientX;
+        const w = stepWidth(scroller);
+
+        // Riaabilita smooth per lo snap finale
+        scroller.style.scrollBehavior = 'smooth';
+
+        // Snap alla foto più vicina in base alla direzione del gesto
+        // Soglia bassa (15% larghezza) = gesto amichevole
+        const threshold = w * 0.15;
+        let target;
+        if (dx > threshold) {
+          // Swipe sinistra → foto successiva
+          target = Math.ceil(scroller.scrollLeft / w) * w;
+        } else if (dx < -threshold) {
+          // Swipe destra → foto precedente
+          target = Math.floor(scroller.scrollLeft / w) * w;
+        } else {
+          // Gesto troppo corto → torna alla foto corrente
+          target = Math.round(scroller.scrollLeft / w) * w;
+        }
+        scroller.scrollTo({ left: target, behavior: 'smooth' });
+        startX = null;
+      }, { passive: true });
+    })();
+
+  })();
+
+
+  (function() {
+    const lightbox     = document.getElementById('lightbox');
+    const lbImg        = document.getElementById('lightbox-img');
+    const lbCaption    = document.getElementById('lightbox-caption');
+    const lbClose      = document.getElementById('lightbox-close');
+    const lbPrev       = document.getElementById('lightbox-prev');
+    const lbNext       = document.getElementById('lightbox-next');
+
+    let allItems = []; // array of {src, alt, label, element}
+    let currentLb = 0;
+
+    function buildItemList() {
+      allItems = [];
+      const isMobileView = window.innerWidth <= 768;
+      let itemsNodeList;
+
+      if (isMobileView) {
+        // Su mobile estrae tutte le foto dalla lista in scorrimento ininterrotto
+        itemsNodeList = document.querySelectorAll('.gallery-carousel-wrapper .gallery-item');
+      } else {
+        // Su desktop estrae le foto solo dalla slide attiva corrente
+        const activeSlide = document.querySelector('.gallery-slide.active');
+        itemsNodeList = activeSlide ? activeSlide.querySelectorAll('.gallery-item') : [];
+      }
+
+      itemsNodeList.forEach(item => {
+        const img    = item.querySelector('img');
+        const label  = item.querySelector('.gallery-item-label');
+        if (img) {
+          allItems.push({
+            src:     img.src,
+            alt:     img.alt || '',
+            label:   label ? label.textContent.trim() : '',
+            element: item
+          });
+        }
+      });
+    }
+
+    function openLightbox(index) {
+      buildItemList();
+      if (!allItems.length) return;
+      currentLb = (index + allItems.length) % allItems.length;
+      const item = allItems[currentLb];
+      lbImg.src         = item.src;
+      lbImg.alt         = item.alt;
+      lbCaption.textContent = item.label;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbImg.style.opacity = '0';
+      lbImg.onload = () => { lbImg.style.transition = 'opacity 0.3s'; lbImg.style.opacity = '1'; };
+      if (lbImg.complete) { lbImg.style.opacity = '1'; }
+      // Show/hide nav based on count
+      lbPrev.style.display = allItems.length > 1 ? '' : 'none';
+      lbNext.style.display = allItems.length > 1 ? '' : 'none';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+
+    function navigate(dir) {
+      openLightbox(currentLb + dir);
+    }
+
+    // Delegate click on gallery items
+    document.addEventListener('click', e => {
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      
+      // Costruisci o ricostruisci la lista prima di aprirla
+      buildItemList();
+      
+      // Trova l'elemento cliccato usando il riferimento diretto al nodo
+      const idx = allItems.findIndex(i => i.element === item);
+      if (idx >= 0) openLightbox(idx);
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    lbPrev.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', e => { e.stopPropagation(); navigate(1); });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')   navigate(-1);
+      if (e.key === 'ArrowRight')  navigate(1);
+    });
+
+    // Touch swipe support for lightbox
+    let lbTouchX = null;
+    lightbox.addEventListener('touchstart', e => { lbTouchX = e.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', e => {
+      if (lbTouchX === null) return;
+      const dx = e.changedTouches[0].clientX - lbTouchX;
+      if (Math.abs(dx) > 40) navigate(dx < 0 ? 1 : -1);
+      lbTouchX = null;
+    });
+  })();
+
 </script>
 </body>
 </html>
