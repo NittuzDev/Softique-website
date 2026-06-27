@@ -11,7 +11,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="images/favicon_io/site.webmanifest">
 
 <meta property="og:title" content="Softique Beauty Nail - Onicotecnica a Rovetta (BG)">
@@ -38,8 +38,7 @@
     "addressCountry": "IT"
   },
   "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:30", "closes": "19:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday"], "opens": "09:00", "closes": "18:00" }
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:30", "closes": "19:00" }
   ],
   "sameAs": ["https://www.instagram.com/softique_beauty_nail"],
   "employee": { "@type": "Person", "name": "Roberta Paiocchi", "jobTitle": "Onicotecnica" }
@@ -60,10 +59,10 @@
     --deep: #5C3D2E;
     --dark: #1A0F0A;
     --gold: #B89A6A;
-    --light-text: #6E4E3D; /* MIGLIORATO: Scurito leggermente per aumentare la leggibilità */
+    --light-text: #6E4E3D;
     --white: #FFFFFF;
     --section-pad: 100px;
-    --radius-soft: 4px; /* NUOVO: Angoli morbidi per un look più accogliente */
+    --radius-soft: 4px;
   }
 
   html { scroll-behavior: smooth; }
@@ -143,30 +142,19 @@
   }
   .nav-cta:hover { background: var(--rose) !important; }
 
-  .gallery-grid-reverse {
-    grid-template-columns: 1fr 1fr 1.5fr 2fr;
-    margin-top: 3px;
-  }
-
-  .gallery-grid-reverse .gallery-item-tall {
-    grid-row: span 2;
-  }
-
- /* CAROUSEL */
+  /* CAROUSEL */
  .gallery-carousel-wrapper {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   overflow: hidden;
-  perspective: 1000px; /* Aggiunge profondità 3D all'effetto */
+  perspective: 1000px;
 }
 
 .gallery-slide {
   grid-area: 1 / 1;
   opacity: 0;
-  /* Aumentiamo lo spostamento a 120px e rimpiccioliamo leggermente lo sfondo */
-  transform: translateX(120px) scale(0.95); 
-  /* Usiamo una curva cubic-bezier personalizzata per un effetto "morbido" */
+  transform: translateX(120px) scale(0.95);
   transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
               transform 1s cubic-bezier(0.25, 1, 0.5, 1);
   pointer-events: none;
@@ -179,21 +167,15 @@
 }
 
 .gallery-slide img {
-  display: block;       /* 💡 Questo elimina lo spazio della baseline del testo */
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* Mantiene le proporzioni corrette */
-
+  object-fit: cover;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  /* 💡 PROPRIETÀ CHIAVE PER I PATTERN COME IL JEANS */
-  image-rendering: auto;              /* Permette al browser di usare l'algoritmo standard bilanciato */
-  transform: translate3d(0, 0, 0);     /* Isola l'immagine sulla GPU */
-  
-  /* 💡 IL TRUCCO DEFINITIVO PER IL MOIRÉ: */
-  /* Applica una sfocatura infinitesimale che "ammorbidisce" la trama del jeans 
-     solo durante il rendering matematico del browser, azzerando le interferenze. */
+  transform: translate3d(0, 0, 0);
+  image-rendering: auto;
+  /* Sfocatura infinitesimale per ridurre effetto moiré su trame fitte */
   filter: blur(0.3px);
 }
 
@@ -259,7 +241,7 @@
     font-size: clamp(52px, 5.5vw, 80px);
     font-weight: 300;
     line-height: 1.08;
-    letter-spacing: 0.02em; /* MIGLIORATO: Lettere leggermente distanziate per eleganza */
+    letter-spacing: 0.02em;
     color: var(--dark);
     margin-bottom: 32px;
     opacity: 0;
@@ -287,7 +269,6 @@
     animation: fadeUp 0.9s 0.65s forwards;
   }
   
-  /* MIGLIORATO: Trasformato l'anonimo btn-ghost della hero in una CTA solida e accattivante */
   .hero-actions .btn-ghost {
     background: var(--deep);
     color: var(--white);
@@ -308,7 +289,7 @@
     background: var(--rose);
     transform: translateY(-2px);
   }
-  .hero-actions .btn-ghost::after { content: none; } /* Rimossa la freccia superflua */
+  .hero-actions .btn-ghost::after { content: none; }
 
   .hero-right {
     position: relative;
@@ -539,16 +520,16 @@
   .services-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px; /* MIGLIORATO: Aggiunto gap visivo per staccare leggermente le card anziché l'effetto blocco unico */
+    gap: 16px;
     background: transparent;
   }
   .service-card {
-    background: rgba(255, 255, 255, 0.05); /* Più visibile rispetto allo 0.02 precedente */
+    background: rgba(255, 255, 255, 0.05);
     padding: 44px 32px;
     position: relative;
     overflow: hidden;
     border-radius: var(--radius-soft);
-    border: 1px solid rgba(255, 255, 255, 0.12); /* Bordino iniziale più marcato */
+    border: 1px solid rgba(255, 255, 255, 0.12);
     transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     cursor: default;
   }
@@ -563,14 +544,14 @@
     transform-origin: left;
   }
   .service-card:hover { 
-    background: rgba(196, 150, 122, 0.15); /* Sfondo rosa/bronzo più evidente */
+    background: rgba(196, 150, 122, 0.15);
     transform: translateY(-6px);
-    border-color: var(--rose); /* Il bordo diventa del colore del brand */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Crea profondità dello stacco */
+    border-color: var(--rose);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   }
 
   .service-card:hover p {
-    color: var(--white); /* Il testo diventa bianchissimo all'hover */
+    color: var(--white);
   }
 
   .service-card:hover::before { transform: scaleX(1); }
@@ -578,15 +559,15 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 52px;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.25); /* MIGLIORATO: Portato da 0.06 a 0.25 per renderlo visibile fin da subito */
+    color: rgba(255, 255, 255, 0.25);
     line-height: 1;
     margin-bottom: 28px;
-    transition: color 0.4s ease, transform 0.4s ease; /* Transizione fluida anche per il movimento */
+    transition: color 0.4s ease, transform 0.4s ease;
     display: inline-block;
   }
   .service-card:hover .service-num { 
-    color: var(--gold); /* Oppure var(--rose) se preferisci il rosa rispetto all'oro */
-    transform: scale(1.05); /* Un leggerissimo ingrandimento elegante */ 
+    color: var(--gold);
+    transform: scale(1.05);
   }
   .service-icon {
     width: 40px; height: 40px;
@@ -608,7 +589,7 @@
   .service-card p {
     font-size: 13px;
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.8); /* Molto più leggibile senza hover */
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 300;
     margin-bottom: 24px;
     transition: color 0.3s ease;
@@ -918,65 +899,6 @@
     letter-spacing: 2px;
   }
 
-  /* ── BOOKING ── */
-  .booking {
-    padding: var(--section-pad) 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    align-items: center;
-  }
-  .booking-form-wrap {
-    background: var(--white);
-    padding: 54px;
-    border: 1px solid rgba(196,150,122,0.15);
-    border-radius: var(--radius-soft);
-  }
-  .form-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--dark);
-    margin-bottom: 36px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--light-text);
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid rgba(92,61,46,0.2);
-    background: transparent;
-    padding: 12px 0;
-    font-family: 'Jost', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--dark);
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .form-group input:focus,
-  .form-group select:focus {
-    border-bottom-color: var(--rose);
-  }
-  .form-group input::placeholder { color: var(--blush); }
-
   /* ── INFO ── */
   .info-grid {
     display: flex;
@@ -1016,7 +938,7 @@
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr; /* MIGLIORATO: Bilanciata a 3 colonne per rimuovere il buco della colonna vuota */
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 60px;
     margin-bottom: 60px;
   }
@@ -1169,7 +1091,7 @@
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
   
-  /* MIGLIORATO: Cambia il colore delle linee dell'hamburger quando aperto sul menu mobile beige */
+  /* Colore delle linee hamburger quando aperto sul menu mobile */
   .hamburger.open span {
     background: var(--rose);
   }
@@ -1464,8 +1386,8 @@
 <section class="hero">
   <div class="hero-left">
 
+    <p class="hero-eyebrow">Studio Onicotecnica Rovetta - Bergamo</p>
     <h1 class="hero-title">
-      <span style="font-size: 10px; display: block; letter-spacing: 0.4em; text-transform: uppercase; color: var(--rose); font-weight: 500; margin-bottom: 10px;">Studio Onicotecnica Rovetta - Bergamo</span>
       Le tue unghie,<br>
       il tuo <em>carattere</em>
     </h1>
@@ -1768,7 +1690,7 @@
         </div>
       </div>
       
-            <div class="gallery-slide" id="gallery-slide-2">
+      <div class="gallery-slide" id="gallery-slide-2">
         <div class="gallery-grid">
           <div class="gallery-item">
             <div class="gallery-item-bg">
@@ -1848,7 +1770,7 @@
       <span class="quote-mark">"</span>
       <p class="testimonial-text">Molto brava e professionale! Partivo da una situazione non semplicissima, quindi il lavoro richiedeva ancora più cura e precisione, ma il risultato finale è davvero stupendo. Super soddisfatta del semipermanente!</p>
       <div class="testimonial-author">
-        <div class="author-avatar" style="background:rgba(196,150,122,0.12)">GM</div>
+        <div class="author-avatar" style="background:rgba(196,150,122,0.12)">DT</div>
         <div class="author-info">
           <h5>Debora T.</h5>
         </div>
@@ -1861,7 +1783,7 @@
         Roberta è super brava e precisa! Ho già preso il prossimo appuntamento.
       </p>
       <div class="testimonial-author">
-        <div class="author-avatar" style="background:rgba(184,154,106,0.12)">SL</div>
+        <div class="author-avatar" style="background:rgba(184,154,106,0.12)">CT</div>
         <div class="author-info">
           <h5>Cristina T.</h5>
         </div>
@@ -1918,8 +1840,8 @@
           <div class="info-text">
             <h4>Orari - <b>(Si riceve solo su appuntamento)</b></h4>
             <p>
-              Lun – Ven: 14:15 – 19:00<br>
-              Sabato: 09:00 – 18:00<br>
+              Lun – Ven: 14:30 – 19:00<br>
+              Sabato: Chiuso<br>
               Domenica: Chiuso
             </p>
           </div>
@@ -1956,6 +1878,7 @@
       <p class="footer-desc">
         Un rifugio di bellezza e benessere nel cuore di Rovetta. Dove ogni dettaglio racconta una storia di cura e passione.
       </p>
+      <br/>
     </div>
     <div class="footer-col">
       <h4>Studio</h4>
@@ -1974,7 +1897,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2026 Softique Beauty Nail. Tutti i diritti riservati.</span>
+    <span class="footer-copy">© 2026 Softique Beauty Nail di Roberta Paiocchi - P.I.: 04888910165</span>
     <span class="footer-tagline">Beauty is an art, not an accident.</span>
   </div>
 </footer>
@@ -2038,12 +1961,8 @@
   
 
   window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav'); // o il tuo selettore
-  if (window.scrollY > 50) { // soglia in pixel
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
+  const nav = document.querySelector('nav');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
 });
 
  (function() {
