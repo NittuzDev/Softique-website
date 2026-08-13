@@ -1,0 +1,3 @@
+# Extra safety net: nothing under public/ should ever match these, but just in case.
+.DS_Store
+*.map
