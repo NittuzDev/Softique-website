@@ -16,12 +16,12 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  // Create with: npx wrangler kv namespace create BOOKING_KV
-  // then replace the id below with the one printed by that command.
+  // Create in the Cloudflare dashboard: Storage & Databases -> KV -> Create a
+  // namespace. Then paste its Namespace ID below (not a secret, just an id).
   "kv_namespaces": [
     {
       "binding": "BOOKING_KV",
-      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+      "id": "563a35ee8110484d8b7627499f4fffed"
     }
   ]
 }
