@@ -1231,8 +1231,11 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 44px;
+  justify-content: flex-start;
+  gap: 32px;
+  padding: 110px 24px 60px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.77,0,0.18,1);
 }
@@ -1509,7 +1512,7 @@ footer {
   width: 100%;
   max-width: 640px;
   max-height: 88vh;
-  overflow-y: auto;
+  overflow: hidden;
   border-radius: 6px;
   box-shadow: 0 40px 100px rgba(26,15,10,0.35);
   padding: 44px 44px 28px;
@@ -1575,7 +1578,14 @@ footer {
 .booking-progress-step.done span { border-color: var(--rose); color: var(--white); background: var(--rose); }
 .booking-progress-bar { flex: 1 1 auto; height: 1px; background: var(--blush); margin-top: 14px; }
 
-.booking-body { flex: 1 1 auto; margin: 26px 0; min-height: 220px; }
+.booking-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 26px 0;
+  padding-bottom: 4px;
+}
 .booking-step[hidden] { display: none; }
 
 .booking-loading { color: var(--light-text); font-size: 14px; }
@@ -1750,7 +1760,7 @@ footer {
 }
 .booking-gcal-link:hover { color: var(--deep); border-color: var(--deep); }
 
-.booking-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 12px; border-top: 1px solid rgba(196,150,122,0.2); }
+.booking-footer { flex: 0 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 12px; border-top: 1px solid rgba(196,150,122,0.2); }
 .booking-btn {
   font-family: 'Jost', sans-serif;
   font-size: 11px;
