@@ -761,25 +761,31 @@
 
       <!-- STEP 2 — date & time -->
       <section class="booking-step" data-step="2" hidden>
-        <button class="booking-suggested" id="booking-suggested" type="button" hidden></button>
-        <div class="booking-calendar">
-          <div class="booking-calendar-header">
-            <button type="button" id="cal-prev" aria-label="Mese precedente">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <span id="cal-month-label">—</span>
-            <button type="button" id="cal-next" aria-label="Mese successivo">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-          <div class="booking-calendar-weekdays">
-            <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
-          </div>
-          <div class="booking-calendar-grid" id="cal-grid"></div>
+        <div class="booking-step-loader" id="booking-availability-loader" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Caricamento disponibilità…</p>
         </div>
-        <div class="booking-slots-wrap">
-          <p class="booking-slots-label" id="booking-slots-label">Seleziona un giorno per vedere gli orari disponibili</p>
-          <div class="booking-slots" id="booking-slots"></div>
+        <div id="booking-availability-content">
+          <button class="booking-suggested" id="booking-suggested" type="button" hidden></button>
+          <div class="booking-calendar">
+            <div class="booking-calendar-header">
+              <button type="button" id="cal-prev" aria-label="Mese precedente">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span id="cal-month-label">—</span>
+              <button type="button" id="cal-next" aria-label="Mese successivo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            <div class="booking-calendar-weekdays">
+              <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="booking-calendar-grid" id="cal-grid"></div>
+          </div>
+          <div class="booking-slots-wrap">
+            <p class="booking-slots-label" id="booking-slots-label">Seleziona un giorno per vedere gli orari disponibili</p>
+            <div class="booking-slots" id="booking-slots"></div>
+          </div>
         </div>
       </section>
 

@@ -14,6 +14,8 @@
   const closeBtn = document.getElementById('booking-close');
   const servicesEl = document.getElementById('booking-services');
   const suggestedEl = document.getElementById('booking-suggested');
+  const availabilityLoader = document.getElementById('booking-availability-loader');
+  const availabilityContent = document.getElementById('booking-availability-content');
   const calPrev = document.getElementById('cal-prev');
   const calNext = document.getElementById('cal-next');
   const calMonthLabel = document.getElementById('cal-month-label');
@@ -195,7 +197,8 @@
   // ── Step 2: date & time ──
   async function ensureAvailabilityLoaded() {
     if (state.availability) return;
-    calGrid.innerHTML = '<p class="booking-loading">Caricamento disponibilità…</p>';
+    availabilityContent.hidden = true;
+    availabilityLoader.hidden = false;
     suggestedEl.hidden = true;
     try {
       const t = todayLocal();
@@ -208,9 +211,13 @@
       state.availability = data;
       renderSuggested();
       renderCalendar();
+      renderSlots();
     } catch (err) {
       calGrid.innerHTML = '';
       slotsLabel.textContent = 'Impossibile caricare la disponibilità. Riprova più tardi o contattaci su WhatsApp.';
+    } finally {
+      availabilityLoader.hidden = true;
+      availabilityContent.hidden = false;
     }
   }
 
