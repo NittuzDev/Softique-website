@@ -10,7 +10,7 @@ export const SERVICES = [
   { id: 'semi', name: 'Semipermanente', duration: 60, description: 'Classico o con rinforzo' },
   { id: 'pedicure', name: 'Pedicure estetica', duration: 60, description: 'Con o senza semipermanente' },
   { id: 'copertura-gel', name: 'Copertura gel', duration: 75, description: 'Unghie naturali rinforzate in gel' },
-  { id: 'copertura-gel', name: 'Copertura gel', duration: 100, description: 'Rinforzo in gel con babyboomer o french' },
+  { id: 'copertura-gel-bf', name: 'Copertura gel', duration: 100, description: 'Rinforzo in gel con babyboomer o french' },
   { id: 'ricostruzione', name: 'Ricostruzione', duration: 120, description: 'Gel o Acrigel' },
   { id: 'rimozione', name: 'Rimozione', duration: 30, description: 'Gel o semipermanente' },
 ];
