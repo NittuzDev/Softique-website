@@ -205,7 +205,7 @@ export default {
           GOOGLE_PRIVATE_KEY: Boolean(env.GOOGLE_PRIVATE_KEY),
           GOOGLE_CALENDAR_ID: Boolean(env.GOOGLE_CALENDAR_ID),
           NTFY_URL: Boolean(env.NTFY_URL),
-          //NTFY_TOKEN: Boolean(env.NTFY_TOKEN),
+          NTFY_TOKEN: Boolean(env.NTFY_TOKEN),
           BOOKING_KV: Boolean(env.BOOKING_KV),
           test: env.GOOGLE_PRIVATE_KEY
         });
