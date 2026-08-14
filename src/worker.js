@@ -207,7 +207,7 @@ export default {
           NTFY_URL: Boolean(env.NTFY_URL),
           NTFY_TOKEN: Boolean(env.NTFY_TOKEN),
           BOOKING_KV: Boolean(env.BOOKING_KV),
-          NTFY_URL: env.NTFY_URL
+          NTFY_URL1: env.NTFY_URL
         });
         
       }
