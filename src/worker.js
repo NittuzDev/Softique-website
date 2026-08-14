@@ -11,6 +11,7 @@ import {
 import { computeAvailability } from './availability.js';
 import { freeBusyQuery } from './google.js';
 import { sendNtfy } from './ntfy.js';
+import { sendTelegram } from './telegram.js';
 import { nowInTimeZone, parseDateKey, parseTimeKey, toDateKey, zonedTimeToUtc } from './time.js';
 
 function json(data, status = 200, extraHeaders = {}) {
@@ -165,21 +166,27 @@ async function handleCreateBooking(env, request, ip) {
   // Nothing is written to Google Calendar — this notification (plus the
   // on-screen confirmation) is the only outcome of a booking request.
   // Add it to your calendar yourself once you've confirmed with the customer.
-  await sendNtfy(env, {
-    title: '💅 Nuova richiesta di prenotazione',
-    message: [
-      `${service.name} (${service.duration} min)`,
-      `📅 ${body.date} alle ${body.start}–${endTimeKey}`,
-      `👤 ${name}`,
-      `📞 ${phone}`,
-      email ? `✉️ ${email}` : null,
-      notes ? `📝 ${notes}` : null,
-    ]
-      .filter(Boolean)
-      .join('\n'),
-    tags: ['nail_care', 'bell'],
-    click: `tel:${phone.replace(/\s+/g, '')}`,
-  });
+  const title = '💅 Nuova richiesta di prenotazione';
+  const message = [
+    `${service.name} (${service.duration} min)`,
+    `📅 ${body.date} alle ${body.start}–${endTimeKey}`,
+    `👤 ${name}`,
+    `📞 ${phone}`,
+    email ? `✉️ ${email}` : null,
+    notes ? `📝 ${notes}` : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  await Promise.all([
+    sendTelegram(env, { title, message }),
+    sendNtfy(env, {
+      title,
+      message,
+      tags: ['nail_care', 'bell'],
+      click: `tel:${phone.replace(/\s+/g, '')}`,
+    }),
+  ]);
 
   return json(responsePayload, 201);
 }

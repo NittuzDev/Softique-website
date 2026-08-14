@@ -8,10 +8,10 @@ contact info**, backed by a Cloudflare Worker that:
    are free (`freeBusy` — it can only see busy/free blocks, never event
    details, and it can never create, edit, or delete anything).
 2. Re-checks the exact slot is still free right before accepting the request.
-3. Sends you a **push notification via ntfy** with all the booking details.
+3. Sends you a **Telegram message** with all the booking details.
 4. Shows the customer an on-screen confirmation.
 
-That's the entire outcome of a booking: **an ntfy notification + a UI
+That's the entire outcome of a booking: **a Telegram message + a UI
 confirmation**. The website never writes to your Google Calendar — you (or
 Roberta) review the notification and add the appointment to the calendar
 yourselves once it's confirmed with the customer. Nothing is stored in a
@@ -32,7 +32,8 @@ src/worker.js          → Cloudflare Worker: /api/services, /api/availability, 
 src/config.js          → services, business hours, buffer/lead time (EDIT ME)
 src/google.js          → Google service-account auth + Calendar API calls
 src/availability.js    → turns freeBusy data into bookable slots
-src/ntfy.js            → push notification sender
+src/telegram.js        → Telegram notification sender (production)
+src/ntfy.js            → optional ntfy sender (works locally)
 ```
 
 Nothing under `src/` or `wrangler.jsonc` is publicly served — only the
@@ -83,18 +84,23 @@ accidentally shared with a higher permission, the Worker still couldn't use
 it to write anything — there is simply no calendar-writing code in this
 project.
 
-## 3. ntfy — get notified on your phone
+## 3. Telegram — get notified on your phone
 
-1. Install the **ntfy** app ([iOS](https://apps.apple.com/us/app/ntfy/id1625396347) /
-   [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy)),
-   or just use the web app at [ntfy.sh](https://ntfy.sh/).
-2. Pick a **long, random topic name** that nobody can guess, e.g.
-   `softique-bk-7f3a9c21`. Anyone who knows the topic name can read your
-   notifications, so don't use something obvious like `softique`.
-3. Subscribe to that topic in the app: `https://ntfy.sh/softique-bk-7f3a9c21`.
-4. That URL is the value you'll set as `NTFY_URL` in the next section. (If
-   you self-host ntfy or want extra protection, you can also set an access
-   token as `NTFY_TOKEN` — see the [ntfy docs](https://docs.ntfy.sh/publish/#access-tokens).)
+ntfy.sh's free tier rate-limits by source IP. Cloudflare Workers share egress
+IPs, so production bookings usually get HTTP 429. **Telegram** is the free
+Android/iOS path that works from Workers.
+
+1. Install [Telegram](https://telegram.org/) on your phone.
+2. Open [@BotFather](https://t.me/BotFather) → `/newbot` → follow the prompts.
+   Copy the bot token (`123456:ABC-DEF...`).
+3. Open your new bot and tap **Start** (so it can message you).
+4. In a browser, open
+   `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates`
+   and copy the numeric `chat.id` (your user id, e.g. `123456789`).
+5. Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in the next section.
+
+ntfy remains optional (`NTFY_URL` / `NTFY_TOKEN`). It works locally; leave it
+unset in production unless you self-host ntfy or pay for ntfy.sh.
 
 ## 4. Cloudflare — what you need to set up
 
@@ -130,8 +136,11 @@ Now set the secrets (each command will prompt you to paste the value):
 npx wrangler secret put GOOGLE_CLIENT_EMAIL
 npx wrangler secret put GOOGLE_PRIVATE_KEY     # paste the whole PEM block, multi-line is fine
 npx wrangler secret put GOOGLE_CALENDAR_ID
-npx wrangler secret put NTFY_URL               # e.g. https://ntfy.sh/softique-bk-7f3a9c21
-npx wrangler secret put NTFY_TOKEN             # optional, only if your ntfy topic needs auth
+npx wrangler secret put TELEGRAM_BOT_TOKEN     # from @BotFather
+npx wrangler secret put TELEGRAM_CHAT_ID       # numeric chat id from getUpdates
+# optional — ntfy.sh free tier usually 429s from Cloudflare Workers
+# npx wrangler secret put NTFY_URL
+# npx wrangler secret put NTFY_TOKEN
 ```
 
 Deploy:
@@ -183,14 +192,14 @@ No redeploy logic needed beyond `npx wrangler deploy` after editing.
   name/phone/email(optional)/notes.
 - On submit, the Worker re-checks the exact slot against your calendar's
   free/busy data (in case a slot became busy after the page loaded — e.g.
-  you added an appointment by phone in the meantime), then sends you an
-  ntfy push with all the details (service, date/time, name, phone, email,
+  you added an appointment by phone in the meantime), then sends you a
+  Telegram message with all the details (service, date/time, name, phone, email,
   notes) and shows the customer an on-screen "richiesta inviata" confirmation.
-- **Nothing is ever written to Google Calendar.** Tapping the ntfy
-  notification opens your phone's dialer with the customer's number ready to
-  call. The customer also gets a "+ Aggiungi al tuo Google Calendar" link on
-  the confirmation screen — that only adds the event to *their own* personal
-  calendar and has nothing to do with your studio's calendar or the Worker.
+- **Nothing is ever written to Google Calendar.** The customer's number is in
+  the Telegram message so you can call or WhatsApp them. The customer also gets
+  a "+ Aggiungi al tuo Google Calendar" link on the confirmation screen — that
+  only adds the event to *their own* personal calendar and has nothing to do
+  with your studio's calendar or the Worker.
 - A hidden honeypot field plus a soft per-IP rate limit (8 requests / 10 min,
   via `BOOKING_KV`) provide basic spam/bot protection. For stronger
   protection later, consider adding [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
@@ -203,6 +212,6 @@ No redeploy logic needed beyond `npx wrangler deploy` after editing.
 
 - Google Calendar API: generous free quota (1,000,000 requests/day), no cost
   for this use case.
-- ntfy.sh: free for personal use; self-host if you want full control.
+- Telegram: free.
 - Cloudflare Workers + KV: comfortably within the free tier for a small
   studio's traffic.

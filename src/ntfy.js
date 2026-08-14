@@ -26,10 +26,7 @@ function parseNtfyTarget(rawUrl) {
 export async function sendNtfy(env, { title, message, priority = 'high', tags = [], click }) {
   const ntfyUrl = trimEnv(env.NTFY_URL);
   const ntfyToken = trimEnv(env.NTFY_TOKEN);
-  if (!ntfyUrl) {
-    console.error('ntfy skipped: NTFY_URL is not set');
-    return;
-  }
+  if (!ntfyUrl) return;
 
   let endpoint;
   let topic;

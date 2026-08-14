@@ -13,10 +13,14 @@ GOOGLE_PRIVATE_KEY=
 # Settings > <calendar> > "Calendar ID".
 GOOGLE_CALENDAR_ID=
 
-# Full ntfy topic URL to POST notifications to, e.g. https://ntfy.sh/softique-xxxxxxxx
-# (pick a long random topic name — anyone who knows it can read your notifications).
+# Telegram bot (recommended for production — ntfy.sh free tier 429s from Workers).
+# Create a bot with @BotFather, then set the token and your numeric chat id.
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+
+# Optional: ntfy topic URL, e.g. https://ntfy.sh/softique-xxxxxxxx
+# Works locally; on Cloudflare, ntfy.sh free tier is usually already rate-limited.
 NTFY_URL=
 
-# Optional: only needed if your ntfy topic requires auth (self-hosted ntfy, or
-# a protected topic on ntfy.sh with an access token).
+# Optional: only needed if your ntfy topic requires auth.
 NTFY_TOKEN=
