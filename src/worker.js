@@ -199,7 +199,7 @@ export default {
       if (url.pathname === '/api/debug-env' && request.method === 'GET') {
         // TEMPORARY diagnostic — reports only whether each secret/var is
         // present, never the actual value. Remove once the Cloudflare
-        // Variables/Secrets setup is confirmed working.
+        // Variables/Secrets setup is confirmed working..
         return json({
           GOOGLE_CLIENT_EMAIL: Boolean(env.GOOGLE_CLIENT_EMAIL),
           GOOGLE_PRIVATE_KEY: Boolean(env.GOOGLE_PRIVATE_KEY),
