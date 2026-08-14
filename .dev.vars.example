@@ -1,0 +1,22 @@
+# Copy this file to ".dev.vars" (already gitignored) to run `wrangler dev` locally.
+# In production, set these as encrypted secrets with `wrangler secret put <NAME>` — see SETUP.md.
+
+# Service account email, e.g. softique-booking@your-project.iam.gserviceaccount.com
+GOOGLE_CLIENT_EMAIL=
+
+# The FULL private key from the service account JSON key file, "-----BEGIN PRIVATE KEY-----...".
+# You may paste it with real newlines or with literal "\n" — both are handled.
+GOOGLE_PRIVATE_KEY=
+
+# The calendar to read (read-only, never written to), usually your Google
+# account email address, or a calendar ID copied from Google Calendar >
+# Settings > <calendar> > "Calendar ID".
+GOOGLE_CALENDAR_ID=
+
+# Full ntfy topic URL to POST notifications to, e.g. https://ntfy.sh/softique-xxxxxxxx
+# (pick a long random topic name — anyone who knows it can read your notifications).
+NTFY_URL=
+
+# Optional: only needed if your ntfy topic requires auth (self-hosted ntfy, or
+# a protected topic on ntfy.sh with an access token).
+NTFY_TOKEN=

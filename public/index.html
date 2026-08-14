@@ -135,13 +135,16 @@
 
 <nav id="navbar">
   <a href="https://softiquenail.it/" class="nav-logo">Softique Beauty Nail<span> by Roberta Paiocchi</span></a>
-  <ul class="nav-links">
-    <li><a href="#about">Chi Siamo</a></li>
-    <li><a href="#services">Servizi</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contatti">Contatti</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">Chi Siamo</a></li>
+      <li><a href="#services">Servizi</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contatti">Contatti</a></li>
+    </ul>
+    <button class="nav-cta js-open-booking" type="button">Prenota Ora</button>
+  </div>
 <button class="hamburger" id="hamburger" aria-label="Apri menu">
   <span></span><span></span><span></span>
 </button>
@@ -153,11 +156,11 @@
   <div class="mobile-menu-deco"></div>
   <a href="#gallery" class="menu-link">Gallery</a>
   <div class="mobile-menu-deco"></div>
-  <a href="#testimonials" class="menu-link">Clienti</a>
-  <div class="mobile-menu-deco"></div>
   <a href="#faq" class="menu-link">FAQ</a>
   <div class="mobile-menu-deco"></div>
   <a href="#contatti" class="menu-link">Contatti</a>
+  <div class="mobile-menu-deco"></div>
+  <button class="menu-link menu-link-cta js-open-booking" type="button">Prenota Ora</button>
 </div>
 
 <section class="hero">
@@ -174,7 +177,8 @@
 
 
     <div class="hero-actions">
-      <a href="#services" class="btn-ghost">Scopri i servizi</a>
+      <button class="btn-gold js-open-booking" type="button">Prenota Ora</button>
+      <a href="#services" class="btn-ghost btn-outline">Scopri i servizi</a>
     </div>
     <div class="hero-deco-line"></div>
   </div>
@@ -623,6 +627,7 @@
       <p class="section-body reveal reveal-delay-2">
         Siamo nel cuore di Rovetta, in Val Seriana. Ti aspettiamo per coccolarti in un ambiente elegante e rilassante.
       </p>
+      <button class="btn-gold js-open-booking reveal reveal-delay-2" type="button" style="margin-bottom:36px;">Prenota il tuo appuntamento online</button>
       <div class="contatti-info reveal reveal-delay-2">
         <div class="info-item">
           <div class="info-icon">📍</div>
@@ -729,6 +734,108 @@
   </button>
 </div>
 
+<div class="booking-modal" id="booking-modal" aria-hidden="true">
+  <div class="booking-overlay" id="booking-overlay"></div>
+  <div class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+    <button class="booking-close" id="booking-close" aria-label="Chiudi prenotazione">✕</button>
+
+    <div class="booking-header">
+      <p class="section-eyebrow" style="margin-bottom:8px;">Prenotazione online</p>
+      <h3 id="booking-title">Prenota il tuo appuntamento</h3>
+      <div class="booking-progress">
+        <div class="booking-progress-step active" data-step="1"><span>1</span>Servizio</div>
+        <div class="booking-progress-bar"></div>
+        <div class="booking-progress-step" data-step="2"><span>2</span>Data &amp; ora</div>
+        <div class="booking-progress-bar"></div>
+        <div class="booking-progress-step" data-step="3"><span>3</span>I tuoi dati</div>
+      </div>
+    </div>
+
+    <div class="booking-body">
+      <!-- STEP 1 — service selection -->
+      <section class="booking-step" data-step="1">
+        <div class="booking-services" id="booking-services">
+          <p class="booking-loading">Caricamento servizi…</p>
+        </div>
+      </section>
+
+      <!-- STEP 2 — date & time -->
+      <section class="booking-step" data-step="2" hidden>
+        <div class="booking-step-loader" id="booking-availability-loader" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Caricamento disponibilità…</p>
+        </div>
+        <div id="booking-availability-content">
+          <button class="booking-suggested" id="booking-suggested" type="button" hidden></button>
+          <div class="booking-calendar">
+            <div class="booking-calendar-header">
+              <button type="button" id="cal-prev" aria-label="Mese precedente">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span id="cal-month-label">—</span>
+              <button type="button" id="cal-next" aria-label="Mese successivo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            <div class="booking-calendar-weekdays">
+              <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="booking-calendar-grid" id="cal-grid"></div>
+          </div>
+          <div class="booking-slots-wrap">
+            <p class="booking-slots-label" id="booking-slots-label">Seleziona un giorno per vedere gli orari disponibili</p>
+            <div class="booking-slots" id="booking-slots"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 — contact details -->
+      <section class="booking-step" data-step="3" hidden>
+        <div class="booking-summary" id="booking-summary"></div>
+        <form id="booking-form" novalidate>
+          <div class="booking-field">
+            <label for="bk-name">Nome e cognome*</label>
+            <input type="text" id="bk-name" name="name" autocomplete="name" required maxlength="80">
+          </div>
+          <div class="booking-field">
+            <label for="bk-phone">Telefono*</label>
+            <input type="tel" id="bk-phone" name="phone" autocomplete="tel" required placeholder="+39 333 1234567">
+          </div>
+          <div class="booking-field">
+            <label for="bk-email">Email (opzionale)</label>
+            <input type="email" id="bk-email" name="email" autocomplete="email">
+          </div>
+          <div class="booking-field">
+            <label for="bk-notes">Note sul trattamento (opzionale)</label>
+            <textarea id="bk-notes" name="notes" maxlength="500" rows="3" placeholder="Es. colore preferito, allergie, ecc."></textarea>
+          </div>
+          <div class="booking-honeypot" aria-hidden="true">
+            <label for="bk-company">Non compilare questo campo</label>
+            <input type="text" id="bk-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+          <p class="booking-error" id="booking-error" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <!-- STEP 4 — confirmation -->
+      <section class="booking-step" data-step="4" hidden>
+        <div class="booking-success">
+          <div class="booking-success-icon">✓</div>
+          <h4>Richiesta inviata!</h4>
+          <p id="booking-success-text">La tua richiesta è stata inviata. Ti contatteremo a breve per confermare l'appuntamento.</p>
+          <a href="#" id="booking-gcal-link" target="_blank" rel="noopener noreferrer" class="booking-gcal-link">+ Aggiungi al tuo Google Calendar</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="booking-footer">
+      <button type="button" class="booking-btn booking-btn-ghost" id="booking-back" hidden>← Indietro</button>
+      <button type="button" class="booking-btn booking-btn-primary" id="booking-next" disabled>Avanti →</button>
+    </div>
+  </div>
+</div>
+
 <script src="script.js" defer></script>
+<script src="booking.js" defer></script>
 </body>
 </html>
