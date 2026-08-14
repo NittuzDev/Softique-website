@@ -225,7 +225,7 @@
     suggestedEl.onclick = () => {
       const [y, m] = next.date.split('-').map(Number);
       state.viewMonth = { year: y, month: m };
-      selectDate(next.date);
+      selectDate(next.date, next.start);
     };
   }
 
@@ -284,9 +284,10 @@
     }
   }
 
-  function selectDate(key) {
+  function selectDate(key, preferredStart) {
     state.selectedDate = key;
-    state.selectedSlot = null;
+    const info = preferredStart ? dayInfo(key) : null;
+    state.selectedSlot = (info && info.slots.find((s) => s.start === preferredStart)) || null;
     renderCalendar();
     renderSlots();
     updateNextEnabled();
