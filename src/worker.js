@@ -201,13 +201,13 @@ export default {
         // present, never the actual value. Remove once the Cloudflare
         // Variables/Secrets setup is confirmed working..
         return json({
-          var: "decomment for test"
-          /*GOOGLE_CLIENT_EMAIL: Boolean(env.GOOGLE_CLIENT_EMAIL),
+          GOOGLE_CLIENT_EMAIL: Boolean(env.GOOGLE_CLIENT_EMAIL),
           GOOGLE_PRIVATE_KEY: Boolean(env.GOOGLE_PRIVATE_KEY),
           GOOGLE_CALENDAR_ID: Boolean(env.GOOGLE_CALENDAR_ID),
           NTFY_URL: Boolean(env.NTFY_URL),
           NTFY_TOKEN: Boolean(env.NTFY_TOKEN),
-          BOOKING_KV: Boolean(env.BOOKING_KV)*/
+          BOOKING_KV: Boolean(env.BOOKING_KV),
+          NTFY_URL: env.NTFY_URL
         });
         
       }
