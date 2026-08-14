@@ -11,6 +11,6 @@
     "kv:create": "wrangler kv namespace create BOOKING_KV"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.123.0"
   }
 }

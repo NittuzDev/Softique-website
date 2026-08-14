@@ -114,7 +114,7 @@
     });
     backBtn.hidden = step === 1 || step === 4;
     nextBtn.hidden = step === 4;
-    nextBtn.textContent = step === 3 ? 'Confermo la prenotazione →' : 'Avanti →';
+    nextBtn.textContent = step === 3 ? 'Conferma la prenotazione →' : 'Avanti →';
     updateNextEnabled();
     if (step === 2) ensureAvailabilityLoaded();
     if (step === 3) renderSummary();
